@@ -3,6 +3,7 @@ namespace MeVersusMany.DataModel
 {
     public interface IErg
     {
+        string Name { get; set; }
         double Distance { get; set; }
         double ExerciseTime { get; set; }
         uint Cadence { get; set; }

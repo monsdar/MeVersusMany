@@ -7,6 +7,7 @@ namespace MeVersusMany.C2Connector
     {
         PerformanceMonitor pm;
 
+        public string Name { get; set; }
         public double Distance { get; set; }
         public double ExerciseTime { get; set; }
         public uint Cadence { get; set; }
@@ -67,6 +68,7 @@ namespace MeVersusMany.C2Connector
             Heartrate = 0;
             PaceInSecs = 0;
             Power = 0;
+            Name = "Player"; //TODO: Let the user set the name
         }
 
         public bool IsWorkoutStarted()

@@ -6,7 +6,7 @@ namespace MeVersusMany.Storage
 {
     class SqliteErg : IErg
     {
-        double lastTimestamp = 0.0;
+        double lastTimestamp = -1.0; //start at a low value so the first update goes through in every case
         double timestampDelta = 0.01; //how often should we update?
 
         SQLiteConnection db = null;
@@ -18,14 +18,9 @@ namespace MeVersusMany.Storage
             TotalDistance = GetTotalDistance(db);
             TotalExerciseTime = GetTotalExerciseTime(db);
 
-            //Init our properties...
-            Cadence = 0;
-            Calories = 0;
-            Distance = 0.0;
-            ExerciseTime = 0.0;
-            Heartrate = 0;
-            PaceInSecs = 0;
-            Power = 0;
+            Update(0.0);
+            Distance = TotalDistance; //Put in the total distance, this will be displayed in the rankings initially (bit hacky, I know...)
+            Name = "Recording"; //TODO: Put a better name in...
         }
 
         private double GetTotalExerciseTime(SQLiteConnection db)
@@ -84,7 +79,7 @@ namespace MeVersusMany.Storage
             }
         }
 
-
+        public string Name { get; set; }
         public double Distance { get; set; }
         public double ExerciseTime { get; set; }
         public uint Cadence { get; set; }

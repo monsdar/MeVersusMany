@@ -18,7 +18,7 @@ namespace MeVersusMany.UI
                 recordedTotalDistance += erg.TotalDistance;
                 recordedTotalExTime += erg.TotalExerciseTime;
             }
-            double avgPace = GetPace(recordedTotalDistance, recordedTotalExTime);
+            double avgPace = Get500mPace(recordedTotalDistance, recordedTotalExTime);
             
             TotalDistanceStr = recordedTotalDistance.ToString("#.") + " m";
             TotalExTimeStr = TimeSpan.FromSeconds(recordedTotalExTime).ToString(@"hh\:mm\:ss");
@@ -31,7 +31,7 @@ namespace MeVersusMany.UI
         public string TotalAvgPaceStr { get; set; }
         public string PositionStr { get; set;  }
 
-        private double GetPace(double distance, double time)
+        private double Get500mPace(double distance, double time)
         {
             return 500.0 / (distance / time);
         }

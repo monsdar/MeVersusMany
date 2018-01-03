@@ -101,6 +101,7 @@
     <Compile Include="UI\OverallStatsViewModel.cs" />
     <Compile Include="UI\PlayerStatsViewModel.cs" />
     <Compile Include="C2Connector\PMUSBInterface.cs" />
+    <Compile Include="UI\RankingViewModel.cs" />
     <Compile Include="UI\ShellViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +138,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\PlayerStatsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\RankingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

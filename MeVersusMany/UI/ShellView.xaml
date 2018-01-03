@@ -11,6 +11,7 @@
             </MenuItem>
         </Menu>
         <StackPanel Orientation="Horizontal">
+            <ContentControl x:Name="Ranking"/>
             <ContentControl x:Name="PlayerStats"/>
             <ContentControl x:Name="OverallStats"/>
         </StackPanel>

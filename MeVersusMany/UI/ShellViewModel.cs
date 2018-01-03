@@ -16,6 +16,7 @@ namespace MeVersusMany.UI
         SqliteWriter storage = null;
         PlayerStatsViewModel playerStats = null;
         OverallStatsViewModel overallStats = null;
+        RankingViewModel ranking = null;
         IEventAggregator eventAggregator = null;
 
         public ShellViewModel()
@@ -41,6 +42,7 @@ namespace MeVersusMany.UI
             //init the UI components
             playerStats = new PlayerStatsViewModel();
             overallStats = new OverallStatsViewModel(recordedErgs);
+            ranking = new RankingViewModel(recordedErgs);
 
             //subscribe to the WPF Rendering event to get some sort of GameLoop
             CompositionTarget.Rendering += PerformUpdate;
@@ -59,6 +61,7 @@ namespace MeVersusMany.UI
 
                 playerStats.PerformUpdate(c2erg);
                 overallStats.PerformUpdate(c2erg, recordedErgs);
+                ranking.PerformUpdate(c2erg, recordedErgs);
                 storage.PerformUpdate(c2erg);
             }
         }
@@ -81,6 +84,14 @@ namespace MeVersusMany.UI
             get
             {
                 return overallStats;
+            }
+        }
+
+        public RankingViewModel Ranking
+        {
+            get
+            {
+                return ranking;
             }
         }
     }
