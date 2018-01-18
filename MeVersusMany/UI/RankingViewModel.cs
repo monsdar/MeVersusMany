@@ -19,7 +19,7 @@ namespace MeVersusMany.UI
         {
             RankedErgList = new ObservableCollection<RankItem>();
 
-            UpdateRanking(recordedErgs);
+            UpdateRanking(recordedErgs, 0.0);
         }
 
         public void PerformUpdate(IErg playerErg, List<IErg> recordedErgs)
@@ -27,26 +27,27 @@ namespace MeVersusMany.UI
             var concatenatedErgs = new List<IErg>();
             concatenatedErgs.Add(playerErg);
             concatenatedErgs.AddRange(recordedErgs);
-            UpdateRanking(concatenatedErgs);
+            UpdateRanking(concatenatedErgs, playerErg.Distance);
 
             NotifyOfPropertyChange(() => RankedErgList);
         }
 
-        private void UpdateRanking(List<IErg> givenErgs)
+        private void UpdateRanking(List<IErg> givenErgs, double baseDistance)
         {
             List<IErg> tempSortableList = new List<IErg>();
             tempSortableList.AddRange(givenErgs);
             tempSortableList.Sort((x, y) => y.Distance.CompareTo(x.Distance));
-
+            
             RankedErgList.Clear();
             for (int index = 0; index < tempSortableList.Count; index++) //we need the index, so use a for-loop instead of foreach
             {
                 IErg erg = tempSortableList[index];
+                
                 var newRankItem = new RankItem()
                 {
                     PositionStr = (index + 1).ToString() + ".",
                     Name = erg.Name,
-                    DistanceStr = erg.Distance.ToString("#.") + " m"
+                    DistanceStr = (erg.Distance - baseDistance).ToString("#.") + " m"
                 };
                 RankedErgList.Add(newRankItem);
             }
