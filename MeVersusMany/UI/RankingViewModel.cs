@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace MeVersusMany.UI
 {
@@ -42,12 +43,13 @@ namespace MeVersusMany.UI
             for (int index = 0; index < tempSortableList.Count; index++) //we need the index, so use a for-loop instead of foreach
             {
                 IErg erg = tempSortableList[index];
-                
+
                 var newRankItem = new RankItem()
                 {
                     PositionStr = (index + 1).ToString() + ".",
                     Name = erg.Name,
-                    DistanceStr = (erg.Distance - baseDistance).ToString("#.") + " m"
+                    DistanceStr = (erg.Distance - baseDistance).ToString("#.") + " m",
+                    Color = new SolidColorBrush(erg.ErgColor)
                 };
                 RankedErgList.Add(newRankItem);
             }
@@ -75,5 +77,6 @@ namespace MeVersusMany.UI
         public string PositionStr { get; set; }
         public string Name { get; set; }
         public string DistanceStr { get; set; }
+        public Brush Color { get; set; }
     }
 }

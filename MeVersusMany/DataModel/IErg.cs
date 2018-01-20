@@ -1,4 +1,6 @@
 ﻿
+using System.Windows.Media;
+
 namespace MeVersusMany.DataModel
 {
     public interface IErg
@@ -11,6 +13,7 @@ namespace MeVersusMany.DataModel
         uint Calories { get; set; }
         uint Power { get; set; }
         uint Heartrate { get; set; }
+        Color ErgColor { get; set; }
 
         bool IsWorkoutStarted();
         void Update(double timestamp);

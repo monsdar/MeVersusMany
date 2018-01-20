@@ -1,6 +1,7 @@
 ﻿using SQLite;
 using System;
 using MeVersusMany.DataModel;
+using System.Windows.Media;
 
 namespace MeVersusMany.Storage
 {
@@ -8,6 +9,7 @@ namespace MeVersusMany.Storage
     {
         double lastTimestamp = -1.0; //start at a low value so the first update goes through in every case
         double timestampDelta = 0.01; //how often should we update?
+        private Random rnd;
 
         SQLiteConnection db = null;
 
@@ -20,7 +22,18 @@ namespace MeVersusMany.Storage
 
             Update(0.0);
             Distance = TotalDistance; //Put in the total distance, this will be displayed in the rankings initially (bit hacky, I know...)
-            Name = "Recording"; //TODO: Put a better name in...
+            Name = "Recording";
+
+            //get a random-seed out of the filename. Set the color of this erg with this seed
+            int seed = 0;
+            foreach (char letter in filepath)
+            {
+                seed += letter;
+            }
+            rnd = new Random(seed);
+            Byte[] b = new Byte[3];
+            rnd.NextBytes(b);
+            ErgColor = Color.FromRgb(b[0], b[1], b[2]);
         }
 
         private double GetTotalExerciseTime(SQLiteConnection db)
@@ -87,6 +100,7 @@ namespace MeVersusMany.Storage
         public uint Calories { get; set; }
         public uint Power { get; set; }
         public uint Heartrate { get; set; }
+        public Color ErgColor { get; set; }
 
         public double TotalDistance { get; set; }
         public double TotalExerciseTime { get; set; }

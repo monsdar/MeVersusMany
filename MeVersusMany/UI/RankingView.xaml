@@ -25,7 +25,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Label FontSize="24" Grid.Column="0" Content="{Binding PositionStr}"/>
-                        <Label FontSize="24" Grid.Column="1" Content="{Binding Name}"/>
+                        <Label FontSize="24" Grid.Column="1" Foreground="{Binding Color}" Content="{Binding Name}"/>
                         <Label HorizontalContentAlignment="Right" FontSize="24" Grid.Column="2" Content="{Binding DistanceStr}"/>
                     </Grid>
                 </DataTemplate>
