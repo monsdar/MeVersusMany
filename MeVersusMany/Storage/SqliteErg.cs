@@ -79,6 +79,8 @@ namespace MeVersusMany.Storage
             }
             lastTimestamp = timestamp;
 
+            //TODO: When the given timestamp exceeds our timestamp we should start again from the beginning
+
             //update the values to reflect what's been stored at the given timestamp
             var results = db.Query<rowdata>("SELECT * FROM rowdata WHERE timestamp >= ? LIMIT 1;", (timestamp));
             if(results.Count > 0)
