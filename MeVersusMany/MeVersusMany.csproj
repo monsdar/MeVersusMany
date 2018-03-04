@@ -103,6 +103,7 @@
     <Compile Include="C2Connector\PMUSBInterface.cs" />
     <Compile Include="UI\RankingViewModel.cs" />
     <Compile Include="UI\ShellViewModel.cs" />
+    <Compile Include="Util\RandomNameProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MyBootstrapper.cs" />

@@ -2,6 +2,7 @@
 using System;
 using MeVersusMany.DataModel;
 using System.Windows.Media;
+using MeVersusMany.Util;
 
 namespace MeVersusMany.Storage
 {
@@ -22,14 +23,14 @@ namespace MeVersusMany.Storage
 
             Update(0.0);
             Distance = TotalDistance; //Put in the total distance, this will be displayed in the rankings initially (bit hacky, I know...)
-            Name = "Recording";
 
-            //get a random-seed out of the filename. Set the color of this erg with this seed
+            //get a random-seed out of the filename. Set the color and name of this erg with this seed
             int seed = 0;
             foreach (char letter in filepath)
             {
                 seed += letter;
             }
+            Name = "Ghost " + RandomNameProvider.RandomName;
             rnd = new Random(seed);
             Byte[] b = new Byte[3];
             rnd.NextBytes(b);

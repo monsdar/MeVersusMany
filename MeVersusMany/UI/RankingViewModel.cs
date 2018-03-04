@@ -69,6 +69,12 @@ namespace MeVersusMany.UI
             //    RankedErgList.RemoveRange(playerIndex + numSurroundingRanks, tempSortableList.Count - 2);
             //}
             //////////
+
+
+            //TODO: Add background color depending on current pace vs average pace (indicate when a rower is over/underperforming to let the user know when to attack or defend)
+
+            //TODO: Add some progress bar to better visualize the distance for the user
+            //TODO: Should we put this as central view with more details?
         }
     }
 
