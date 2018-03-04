@@ -45,6 +45,21 @@ namespace Concept2
         public PerformanceMonitor(ushort DeviceNumber)
         {
             this.DeviceNumber = DeviceNumber;
+            IsStatusInited = false;
+
+            Calories = 0;
+            DeviceNumber = 0;
+            Distance = 0.0f;
+            DragFactor = 0;
+            Heartrate = 0;
+            Pace = 0.0f;
+            Power = 0;
+            Serial = "";
+            SPM = 0;
+            SPMAvg = 0.0f;
+            StrokePhase = StrokePhase.Idle;
+            Worktime = 0.0f;
+            WorkoutState = 0;
         }
 
         public PMUSBInterface.CSAFECommand CreateCommand()
@@ -106,44 +121,41 @@ namespace Concept2
         {
             get; set;
         }
+        public bool IsStatusInited
+        {
+            get; private set;
+        }
 
         public void StatusUpdate()
         {
             PMUSBInterface.CSAFECommand cmd = CreateCommand();
             cmd.CommandsBytes.Add((uint)PMUSBInterface.CSAFECommands.CSAFE_GETSERIAL_CMD);
+            
+            List<uint> data = cmd.Execute();
 
-            try
+            uint currentbyte = 0;
+            uint datalength = 0;
+
+            if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_GETSERIAL_CMD)
             {
-                List<uint> data = cmd.Execute();
+                currentbyte++;
+                datalength = data[(int)currentbyte];
+                currentbyte++;
 
-                uint currentbyte = 0;
-                uint datalength = 0;
+                Serial += (char)data[(int)currentbyte];
+                Serial += (char)data[(int)currentbyte + 1];
+                Serial += (char)data[(int)currentbyte + 2];
+                Serial += (char)data[(int)currentbyte + 3];
+                Serial += (char)data[(int)currentbyte + 4];
+                Serial += (char)data[(int)currentbyte + 5];
+                Serial += (char)data[(int)currentbyte + 6];
+                Serial += (char)data[(int)currentbyte + 7];
+                Serial += (char)data[(int)currentbyte + 8];
 
-                if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_GETSERIAL_CMD)
-                {
-                    currentbyte++;
-                    datalength = data[(int)currentbyte];
-                    currentbyte++;
-
-                    Serial += (char)data[(int)currentbyte];
-                    Serial += (char)data[(int)currentbyte + 1];
-                    Serial += (char)data[(int)currentbyte + 2];
-                    Serial += (char)data[(int)currentbyte + 3];
-                    Serial += (char)data[(int)currentbyte + 4];
-                    Serial += (char)data[(int)currentbyte + 5];
-                    Serial += (char)data[(int)currentbyte + 6];
-                    Serial += (char)data[(int)currentbyte + 7];
-                    Serial += (char)data[(int)currentbyte + 8];
-
-                    currentbyte += datalength;
-                }
-            }
-            catch (PMUSBInterface.PMUSBException ex)
-            {
-                //TODO: Store workout progress, shut down gracefully
-                //throw;
+                currentbyte += datalength;
             }
 
+            IsStatusInited = true;
         }
 
         public void HighResolutionUpdate()
@@ -154,57 +166,49 @@ namespace Concept2
             cmd.CommandsBytes.Add(0x02);
             cmd.CommandsBytes.Add((uint)PMUSBInterface.CSAFECommands.CSAFE_PM_GET_STROKESTATE);
             cmd.CommandsBytes.Add((uint)PMUSBInterface.CSAFECommands.CSAFE_PM_GET_WORKOUTSTATE);
+            
+            List<uint> data = cmd.Execute();
+            uint currentbyte = 0;
+            uint datalength = 0;
 
-            try
+            if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_SETUSERCFG1_CMD)
             {
-                List<uint> data = cmd.Execute();
-                uint currentbyte = 0;
-                uint datalength = 0;
-
-                if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_SETUSERCFG1_CMD)
-                {
-                    currentbyte += 2;
-                }
-
-                if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_PM_GET_STROKESTATE)
-                {
-                    currentbyte++;
-                    datalength = data[(int)currentbyte];
-                    currentbyte++;
-
-                    switch (data[(int)currentbyte])
-                    {
-                        case 0:
-                        case 1:
-                            StrokePhase = StrokePhase.Catch;
-                            break;
-                        case 2:
-                            StrokePhase = StrokePhase.Drive;
-                            break;
-                        case 3:
-                            StrokePhase = StrokePhase.Dwell;
-                            break;
-                        case 4:
-                            StrokePhase = StrokePhase.Recovery;
-                            break;
-                    }
-                    currentbyte++;
-                }
-                if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_PM_GET_WORKOUTSTATE)
-                {
-                    currentbyte++;
-                    datalength = data[(int)currentbyte];
-                    currentbyte++;
-
-                    WorkoutState = data[(int)currentbyte];
-
-                    currentbyte += datalength;
-                }
+                currentbyte += 2;
             }
-            catch (PMUSBInterface.PMUSBException)
+
+            if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_PM_GET_STROKESTATE)
             {
-                //TODO: Store workout progress, shut down gracefully
-                //throw;
+                currentbyte++;
+                datalength = data[(int)currentbyte];
+                currentbyte++;
+
+                switch (data[(int)currentbyte])
+                {
+                    case 0:
+                    case 1:
+                        StrokePhase = StrokePhase.Catch;
+                        break;
+                    case 2:
+                        StrokePhase = StrokePhase.Drive;
+                        break;
+                    case 3:
+                        StrokePhase = StrokePhase.Dwell;
+                        break;
+                    case 4:
+                        StrokePhase = StrokePhase.Recovery;
+                        break;
+                }
+                currentbyte++;
+            }
+            if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_PM_GET_WORKOUTSTATE)
+            {
+                currentbyte++;
+                datalength = data[(int)currentbyte];
+                currentbyte++;
+
+                WorkoutState = data[(int)currentbyte];
+
+                currentbyte += datalength;
             }
         }
 
@@ -227,127 +231,118 @@ namespace Concept2
             cmd.CommandsBytes.Add((uint)PMUSBInterface.CSAFECommands.CSAFE_GETCADENCE_CMD);
             cmd.CommandsBytes.Add((uint)PMUSBInterface.CSAFECommands.CSAFE_GETHRCUR_CMD);
             cmd.CommandsBytes.Add((uint)PMUSBInterface.CSAFECommands.CSAFE_GETCALORIES_CMD);
+            
+            List<uint> data = cmd.Execute();
 
-            try
+            uint currentbyte = 0;
+            uint datalength = 0;
+
+            if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_SETUSERCFG1_CMD)
             {
-
-                List<uint> data = cmd.Execute();
-
-                uint currentbyte = 0;
-                uint datalength = 0;
-
-                if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_SETUSERCFG1_CMD)
-                {
-                    currentbyte += 2;
-                }
-                if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_PM_GET_DRAGFACTOR)
-                {
-                    currentbyte++;
-                    datalength = data[(int)currentbyte];
-                    currentbyte++;
-
-                    DragFactor = data[(int)currentbyte];
-
-                    currentbyte += datalength;
-                }
-                if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_PM_GET_WORKDISTANCE)
-                {
-                    currentbyte++;
-                    datalength = data[(int)currentbyte];
-                    currentbyte++;
-
-                    uint distanceTemp = (data[(int)currentbyte] + (data[(int)currentbyte + 1] << 8) + (data[(int)currentbyte + 2] << 16) + (data[(int)currentbyte + 3] << 24)) / 10;
-                    uint fractionTemp = data[(int)currentbyte + 4];
-
-                    Distance = (float)distanceTemp + ((float)fractionTemp / 10.0f);
-
-                    currentbyte += datalength;
-                }
-                if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_PM_GET_WORKTIME)
-                {
-                    currentbyte++;
-                    datalength = data[(int)currentbyte];
-                    currentbyte++;
-
-                    if (datalength == 5)
-                    {
-                        uint timeInSeconds = (data[(int)currentbyte] + (data[(int)currentbyte + 1] << 8) + (data[(int)currentbyte + 2] << 16) + (data[(int)currentbyte + 3] << 24)) / 100;
-                        uint fraction = data[(int)currentbyte + 4];
-
-                        Worktime = (float)timeInSeconds + ((float)fraction / 100.0f);
-                    }
-                    currentbyte += datalength;
-                }
-                if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_GETPACE_CMD)
-                {
-                    currentbyte++;
-                    datalength = data[(int)currentbyte];
-                    currentbyte++;
-
-                    // Pace is in seconds/Km
-                    uint pace = data[(int)currentbyte] + (data[(int)currentbyte + 1] << 8);
-                    // get pace in seconds / 500m
-                    double fPace = pace / 2.0;
-                    Pace = (float)fPace;
-
-                    currentbyte += datalength;
-                }
-                if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_GETPOWER_CMD)
-                {
-                    currentbyte++;
-                    datalength = data[(int)currentbyte];
-                    currentbyte++;
-
-                    Power = data[(int)currentbyte] + (data[(int)currentbyte + 1] << 8);
-
-                    currentbyte += datalength;
-                }
-                if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_GETCADENCE_CMD)
-                {
-                    currentbyte++;
-                    datalength = data[(int)currentbyte];
-                    currentbyte++;
-
-                    uint currentSPM = data[(int)currentbyte];
-
-                    if (0 < currentSPM)
-                    {
-                        nSPM += currentSPM;
-                        nSPMReads++;
-
-                        SPM = currentSPM;
-                        SPMAvg = ((float)nSPM * 1.0f) / ((float)nSPMReads * 1.0f);
-                    }
-
-                    currentbyte += datalength;
-                }
-                if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_GETHRCUR_CMD)
-                {
-                    currentbyte++;
-                    datalength = data[(int)currentbyte];
-                    currentbyte++;
-
-                    uint currentHeartBeat = data[(int)currentbyte];
-                    Heartrate = currentHeartBeat;
-
-                    currentbyte += datalength;
-                }
-                if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_GETCALORIES_CMD)
-                {
-                    currentbyte++;
-                    datalength = data[(int)currentbyte];
-                    currentbyte++;
-
-                    uint currentCalories = data[(int)currentbyte] + (data[(int)currentbyte + 1] << 8);
-                    Calories = currentCalories;
-
-                    currentbyte += datalength;
-                }
+                currentbyte += 2;
             }
-            catch (PMUSBInterface.PMUSBException)
+            if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_PM_GET_DRAGFACTOR)
             {
-                //TODO: Store workout progress, shut down gracefully
-                //throw;
+                currentbyte++;
+                datalength = data[(int)currentbyte];
+                currentbyte++;
+
+                DragFactor = data[(int)currentbyte];
+
+                currentbyte += datalength;
+            }
+            if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_PM_GET_WORKDISTANCE)
+            {
+                currentbyte++;
+                datalength = data[(int)currentbyte];
+                currentbyte++;
+
+                uint distanceTemp = (data[(int)currentbyte] + (data[(int)currentbyte + 1] << 8) + (data[(int)currentbyte + 2] << 16) + (data[(int)currentbyte + 3] << 24)) / 10;
+                uint fractionTemp = data[(int)currentbyte + 4];
+
+                Distance = (float)distanceTemp + ((float)fractionTemp / 10.0f);
+
+                currentbyte += datalength;
+            }
+            if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_PM_GET_WORKTIME)
+            {
+                currentbyte++;
+                datalength = data[(int)currentbyte];
+                currentbyte++;
+
+                if (datalength == 5)
+                {
+                    uint timeInSeconds = (data[(int)currentbyte] + (data[(int)currentbyte + 1] << 8) + (data[(int)currentbyte + 2] << 16) + (data[(int)currentbyte + 3] << 24)) / 100;
+                    uint fraction = data[(int)currentbyte + 4];
+
+                    Worktime = (float)timeInSeconds + ((float)fraction / 100.0f);
+                }
+                currentbyte += datalength;
+            }
+            if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_GETPACE_CMD)
+            {
+                currentbyte++;
+                datalength = data[(int)currentbyte];
+                currentbyte++;
+
+                // Pace is in seconds/Km
+                uint pace = data[(int)currentbyte] + (data[(int)currentbyte + 1] << 8);
+                // get pace in seconds / 500m
+                double fPace = pace / 2.0;
+                Pace = (float)fPace;
+
+                currentbyte += datalength;
+            }
+            if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_GETPOWER_CMD)
+            {
+                currentbyte++;
+                datalength = data[(int)currentbyte];
+                currentbyte++;
+
+                Power = data[(int)currentbyte] + (data[(int)currentbyte + 1] << 8);
+
+                currentbyte += datalength;
+            }
+            if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_GETCADENCE_CMD)
+            {
+                currentbyte++;
+                datalength = data[(int)currentbyte];
+                currentbyte++;
+
+                uint currentSPM = data[(int)currentbyte];
+
+                if (0 < currentSPM)
+                {
+                    nSPM += currentSPM;
+                    nSPMReads++;
+
+                    SPM = currentSPM;
+                    SPMAvg = ((float)nSPM * 1.0f) / ((float)nSPMReads * 1.0f);
+                }
+
+                currentbyte += datalength;
+            }
+            if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_GETHRCUR_CMD)
+            {
+                currentbyte++;
+                datalength = data[(int)currentbyte];
+                currentbyte++;
+
+                uint currentHeartBeat = data[(int)currentbyte];
+                Heartrate = currentHeartBeat;
+
+                currentbyte += datalength;
+            }
+            if (data[(int)currentbyte] == (uint)PMUSBInterface.CSAFECommands.CSAFE_GETCALORIES_CMD)
+            {
+                currentbyte++;
+                datalength = data[(int)currentbyte];
+                currentbyte++;
+
+                uint currentCalories = data[(int)currentbyte] + (data[(int)currentbyte + 1] << 8);
+                Calories = currentCalories;
+
+                currentbyte += datalength;
             }
         }
     }

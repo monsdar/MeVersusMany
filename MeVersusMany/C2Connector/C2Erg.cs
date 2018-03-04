@@ -34,33 +34,7 @@ namespace MeVersusMany.C2Connector
             {
                 //TODO: This means that no erg has been found... what to do?
             }
-
-            pm = new PerformanceMonitor(givenErgAdress)
-            {
-                //init everything by hand, this avoids us crashing if no connection is made to the erg
-                Calories = 0,
-                DeviceNumber = 0,
-                Distance = 0.0f,
-                DragFactor = 0,
-                Heartrate = 0,
-                Pace = 0.0f,
-                Power = 0,
-                Serial = "",
-                SPM = 0,
-                SPMAvg = 0.0f,
-                StrokePhase = StrokePhase.Idle,
-                Worktime = 0.0f,
-                WorkoutState = 0
-            };
-
-            try
-            {
-                pm.StatusUpdate();
-            }
-            catch (PMUSBInterface.PMUSBException)
-            {
-                //No Erg found, USB exception...
-            }
+            pm = new PerformanceMonitor(givenErgAdress);
 
             //Init our properties...
             Cadence = 0;
@@ -76,7 +50,24 @@ namespace MeVersusMany.C2Connector
 
         public bool IsWorkoutStarted()
         {
-            pm.HighResolutionUpdate();
+            try
+            {
+                //Try to get the erg status inited first...
+                if(!pm.IsStatusInited)
+                {
+                    pm.StatusUpdate();
+                }
+
+                //high res update to get the current workout state
+                pm.HighResolutionUpdate();
+            }
+            catch(PMUSBInterface.PMUSBException ex)
+            {
+                //No erg connected yet, so workout if obviously not started...
+                //Give some feedback to the user to connect the erg correctly?
+                return false;
+            }
+
             var state = pm.WorkoutState;
             if (state != 0)
             {
@@ -97,6 +88,7 @@ namespace MeVersusMany.C2Connector
             catch (PMUSBInterface.PMUSBException)
             {
                 //No Erg found, USB exception...
+                //Notify the user that the connection has been closed... So he knows when his workout is not recorded anymore
             }
             
             Cadence = pm.SPM;
