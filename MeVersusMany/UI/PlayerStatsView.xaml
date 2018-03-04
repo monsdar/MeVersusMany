@@ -13,67 +13,62 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200" />
                     <ColumnDefinition Width="200" />
-                    <ColumnDefinition Width="200" />
-                    <ColumnDefinition Width="200" />
                 </Grid.ColumnDefinitions>
 
-                <Border BorderBrush="Gray" BorderThickness="0 0 2 2" Background="White" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                <Border BorderBrush="Gray" BorderThickness="0 0 2 2" Background="White" Grid.Row="0" Grid.Column="0">
                     <StackPanel>
                         <Label FontSize="12">Time</Label>
                         <Label x:Name="ExerciseTime" FontSize="48" HorizontalAlignment="Center">01:15:32</Label>
                     </StackPanel>
                 </Border>
-                <Border BorderBrush="Gray" BorderThickness="0 0 0 2" Background="White" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2">
+                <Border BorderBrush="Gray" BorderThickness="0 0 0 2" Background="White" Grid.Row="0" Grid.Column="1">
                     <StackPanel>
                         <Label FontSize="12" HorizontalAlignment="Right">Cadence</Label>
                         <Label x:Name="Cadence" FontSize="48" HorizontalAlignment="Center">22 SPM</Label>
                     </StackPanel>
                 </Border>
 
-                <Border BorderBrush="Gray" BorderThickness="0 0 2 2" Background="White" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                <Border BorderBrush="Gray" BorderThickness="0 0 0 2" Background="White" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                     <StackPanel>
                         <Label FontSize="12">Pace</Label>
                         <Label HorizontalAlignment="Center" FontSize="72" x:Name="Pace">2:15.2</Label>
                     </StackPanel>
                 </Border>
-                <Border BorderBrush="Gray" BorderThickness="0 0 0 2" Background="White" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2">
+                <Border BorderBrush="Gray" BorderThickness="0 0 0 2" Background="White" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
                     <StackPanel>
                         <Label FontSize="12" HorizontalAlignment="Right">AvgPace</Label>
                         <Label x:Name="AvgPace" FontSize="72" HorizontalAlignment="Center">2:15.200</Label>
                     </StackPanel>
                 </Border>
 
-                <Border BorderBrush="Gray" BorderThickness="0 0 2 2" Background="White" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                <Border BorderBrush="Gray" BorderThickness="0 0 2 2" Background="White" Grid.Row="4" Grid.Column="0">
                     <StackPanel>
                         <Label FontSize="12">Distance</Label>
-                        <Label FontSize="48" HorizontalAlignment="Center" x:Name="Distance">2143.12 m</Label>
+                        <Label FontSize="36" HorizontalAlignment="Center" x:Name="Distance">2143.12 m</Label>
                     </StackPanel>
                 </Border>
-                <Border BorderBrush="Gray" BorderThickness="0 0 0 2" Background="White" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
+                <Border BorderBrush="Gray" BorderThickness="0 0 0 2" Background="White" Grid.Row="4" Grid.Column="1">
                     <StackPanel>
                         <Label FontSize="12" HorizontalAlignment="Right">Forecast 30min</Label>
-                        <Label x:Name="Forecast" FontSize="48" HorizontalAlignment="Center">7123.23 m</Label>
+                        <Label x:Name="Forecast" FontSize="36" HorizontalAlignment="Center">7123.23 m</Label>
                     </StackPanel>
                 </Border>
 
 
-                <StackPanel Orientation="Vertical" Grid.Row="3" Grid.Column="0">
-                    <Label FontSize="12">Calories</Label>
-                    <Label HorizontalAlignment="Center" x:Name="Calories" FontSize="24">254 cal</Label>
-                </StackPanel>
-
-                <Border BorderBrush="Gray" BorderThickness="2 0 2 0" Background="White" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2">
+                <Border BorderBrush="Gray" BorderThickness="0 0 2 0" Background="White" Grid.Row="5" Grid.Column="0">
                     <StackPanel Orientation="Vertical">
-                        <Label HorizontalAlignment="Center" FontSize="12">Heartrate</Label>
-                        <Label HorizontalAlignment="Center" x:Name="Heartrate" FontSize="24">165 BPM</Label>
+                        <Label FontSize="12">Calories</Label>
+                        <Label HorizontalAlignment="Center" x:Name="Calories" FontSize="24">254 cal</Label>
                     </StackPanel>
                 </Border>
-                <StackPanel Grid.Row="3" Grid.Column="3">
+                <StackPanel Grid.Row="5" Grid.Column="1">
                     <Label HorizontalAlignment="Right" FontSize="12">Power</Label>
                     <Label HorizontalAlignment="Center" x:Name="Power" FontSize="24">220 Watt</Label>
                 </StackPanel>

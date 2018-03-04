@@ -11,7 +11,6 @@ namespace MeVersusMany.UI
             Calories = "0 cal";
             Distance = "0 m";
             ExerciseTime = "00:00:00";
-            Heartrate = "0 BPM";
             Pace = "00:00.0";
             Power = "0 Watt";
             AvgPace = "00:00.000";
@@ -22,7 +21,6 @@ namespace MeVersusMany.UI
         public string Calories { get; private set; }
         public string Distance { get; private set; }
         public string ExerciseTime { get; private set; }
-        public string Heartrate { get; private set; }
         public string Pace { get; private set; }
         public string Power { get; private set; }
 
@@ -35,7 +33,6 @@ namespace MeVersusMany.UI
             Calories = givenErg.Calories.ToString() + " cal";
             Distance = givenErg.Distance.ToString("#.") + " m";
             ExerciseTime = TimeSpan.FromSeconds(givenErg.ExerciseTime).ToString(@"hh\:mm\:ss");
-            Heartrate = givenErg.Heartrate + " BPM";
             Pace = TimeSpan.FromSeconds(givenErg.PaceInSecs).ToString(@"mm\:ss");
             Power = givenErg.Power.ToString() + " Watt";
 
@@ -58,7 +55,6 @@ namespace MeVersusMany.UI
             NotifyOfPropertyChange(() => Distance);
             NotifyOfPropertyChange(() => ExerciseTime);
             NotifyOfPropertyChange(() => Forecast);
-            NotifyOfPropertyChange(() => Heartrate);
             NotifyOfPropertyChange(() => Pace);
             NotifyOfPropertyChange(() => Power);
         }

@@ -64,7 +64,7 @@ namespace MeVersusMany.C2Connector
             catch(PMUSBInterface.PMUSBException ex)
             {
                 //No erg connected yet, so workout if obviously not started...
-                //Give some feedback to the user to connect the erg correctly?
+                //TODO: Give some feedback to the user to connect the erg correctly?
                 return false;
             }
 
@@ -88,7 +88,7 @@ namespace MeVersusMany.C2Connector
             catch (PMUSBInterface.PMUSBException)
             {
                 //No Erg found, USB exception...
-                //Notify the user that the connection has been closed... So he knows when his workout is not recorded anymore
+                //TODO: Notify the user that the connection has been closed... So he knows when his workout is not recorded anymore
             }
             
             Cadence = pm.SPM;
