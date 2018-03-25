@@ -30,6 +30,7 @@ namespace MeVersusMany.Storage
             {
                 seed += letter;
             }
+            RandomNameProvider.Seed = seed;
             Name = "Ghost " + RandomNameProvider.RandomName;
             rnd = new Random(seed);
             Byte[] b = new Byte[3];
