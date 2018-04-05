@@ -24,12 +24,37 @@ namespace MeVersusMany.UI
             TotalExTimeStr = TimeSpan.FromSeconds(recordedTotalExTime).ToString(@"hh\:mm\:ss");
             TotalAvgPaceStr = TimeSpan.FromSeconds(avgPace).ToString(@"mm\:ss\.ff");
             PositionStr = (recordErgs.Count+1) + "/" + (recordErgs.Count+1);
+
+            Calc1MioMeters(recordErgs);
+        }
+
+        private void Calc1MioMeters(List<IErg> recordErgs)
+        {
+            DateTime earliestWorkout = DateTime.Now;
+            foreach (var erg in recordErgs)
+            {
+                if(erg.WorkoutDate != null)
+                {
+                    if(erg.WorkoutDate < earliestWorkout)
+                    {
+                        earliestWorkout = erg.WorkoutDate;
+                    }
+                }
+            }
+
+            TimeSpan overallWorkoutTimeSpan = DateTime.Now - earliestWorkout;
+            var progressFactor = 1000000.0 / recordedTotalDistance;
+
+            overallWorkoutTimeSpan = TimeSpan.FromTicks((long)(overallWorkoutTimeSpan.Ticks * progressFactor));
+            DateTime finishDate = DateTime.Now + overallWorkoutTimeSpan;
+            FinishStr = finishDate.ToString("yyyy-MM-dd");
         }
 
         public string TotalDistanceStr { get; set; }
         public string TotalExTimeStr { get; set; }
         public string TotalAvgPaceStr { get; set; }
         public string PositionStr { get; set;  }
+        public string FinishStr { get; set; }
 
         private double Get500mPace(double distance, double time)
         {

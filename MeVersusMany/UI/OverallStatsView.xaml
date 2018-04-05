@@ -13,6 +13,7 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -34,12 +35,15 @@
                 <Label FontSize="12" Grid.Row="2" Grid.Column="0">AvgPace</Label>
                 <Label x:Name="TotalAvgPaceStr" FontSize="48" HorizontalContentAlignment="Right" Grid.Row="2" Grid.Column="1">02:15.234</Label>
 
-                <Border BorderBrush="Gray" BorderThickness="0 2 0 0" Background="White" Grid.Row="3" Grid.Column="0">
+                <Border BorderBrush="Gray" BorderThickness="0 2 0 2" Background="White" Grid.Row="3" Grid.Column="0">
                     <Label FontSize="12">Position</Label>
                 </Border>
-                <Border BorderBrush="Gray" BorderThickness="0 2 0 0" Background="White" Grid.Row="3" Grid.Column="1">
+                <Border BorderBrush="Gray" BorderThickness="0 2 0 2" Background="White" Grid.Row="3" Grid.Column="1">
                     <Label x:Name="PositionStr" FontSize="48" HorizontalContentAlignment="Right">5/10</Label>
                 </Border>
+
+                <Label FontSize="12" Grid.Row="4" Grid.Column="0">Million Meters at</Label>
+                <Label x:Name="FinishStr" FontSize="48" HorizontalContentAlignment="Right" Grid.Row="4" Grid.Column="1">2018-12-31</Label>
             </Grid>
         </Border>
     </StackPanel>

@@ -1,4 +1,5 @@
 
+using System;
 using System.Windows.Media;
 using Concept2;
 
@@ -17,6 +18,7 @@ namespace MeVersusMany.C2Connector
         public uint Power { get; set; }
         public uint Heartrate { get; set; }
         public Color ErgColor { get; set; }
+        public DateTime WorkoutDate { get; set; }
 
         public C2Erg(ushort givenErgAdress = 0)
         {
@@ -46,6 +48,7 @@ namespace MeVersusMany.C2Connector
             Power = 0;
             Name = "Player"; //TODO: Let the user set the name
             ErgColor = Color.FromRgb(0, 0, 0);
+            WorkoutDate = DateTime.Now;
         }
 
         public bool IsWorkoutStarted()

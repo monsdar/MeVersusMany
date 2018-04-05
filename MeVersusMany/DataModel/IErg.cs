@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Windows.Media;
 
 namespace MeVersusMany.DataModel
@@ -14,6 +15,7 @@ namespace MeVersusMany.DataModel
         uint Power { get; set; }
         uint Heartrate { get; set; }
         Color ErgColor { get; set; }
+        DateTime WorkoutDate { get; set; }
 
         bool IsWorkoutStarted();
         void Update(double timestamp);
