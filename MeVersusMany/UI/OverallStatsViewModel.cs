@@ -2,6 +2,7 @@
 using MeVersusMany.DataModel;
 using MeVersusMany.Storage;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace MeVersusMany.UI
@@ -25,10 +26,10 @@ namespace MeVersusMany.UI
             TotalAvgPaceStr = TimeSpan.FromSeconds(avgPace).ToString(@"mm\:ss\.ff");
             PositionStr = (recordErgs.Count+1) + "/" + (recordErgs.Count+1);
 
-            Calc1MioMeters(recordErgs);
+            Calc1MioMeters(recordErgs, null);
         }
 
-        private void Calc1MioMeters(List<IErg> recordErgs)
+        private void Calc1MioMeters(List<IErg> recordErgs, IErg playerErg)
         {
             DateTime earliestWorkout = DateTime.Now;
             foreach (var erg in recordErgs)
@@ -43,7 +44,12 @@ namespace MeVersusMany.UI
             }
 
             TimeSpan overallWorkoutTimeSpan = DateTime.Now - earliestWorkout;
-            var progressFactor = 1000000.0 / recordedTotalDistance;
+            var totalDist = recordedTotalDistance;
+            if (playerErg != null)
+            {
+                totalDist += playerErg.Distance;
+            }
+            var progressFactor = 1000000.0 / totalDist;
 
             overallWorkoutTimeSpan = TimeSpan.FromTicks((long)(overallWorkoutTimeSpan.Ticks * progressFactor));
             DateTime finishDate = DateTime.Now + overallWorkoutTimeSpan;
@@ -64,7 +70,7 @@ namespace MeVersusMany.UI
         internal void PerformUpdate(IErg playerErg, List<IErg> recordedErgs)
         {
             UpdatePosition(playerErg, recordedErgs);
-
+            
             double totalDistanceDouble = recordedTotalDistance + playerErg.Distance;
             double totalExTimeDouble = recordedTotalExTime + playerErg.ExerciseTime;
             double avgPaceDouble = 500.0 / (totalDistanceDouble / totalExTimeDouble);
@@ -72,10 +78,13 @@ namespace MeVersusMany.UI
             TotalExTimeStr = TimeSpan.FromSeconds(totalExTimeDouble).ToString(@"hh\:mm\:ss");
             TotalAvgPaceStr = TimeSpan.FromSeconds(avgPaceDouble).ToString(@"mm\:ss\.fff");
 
+            Calc1MioMeters(recordedErgs, playerErg);
+
             NotifyOfPropertyChange(() => PositionStr);
             NotifyOfPropertyChange(() => TotalDistanceStr);
             NotifyOfPropertyChange(() => TotalExTimeStr);
             NotifyOfPropertyChange(() => TotalAvgPaceStr);
+            NotifyOfPropertyChange(() => FinishStr);
         }
 
         private void UpdatePosition(IErg playerErg, List<IErg> recordedErgs)
