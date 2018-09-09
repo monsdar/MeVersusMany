@@ -53,7 +53,7 @@ namespace MeVersusMany.UI
 
             overallWorkoutTimeSpan = TimeSpan.FromTicks((long)(overallWorkoutTimeSpan.Ticks * progressFactor));
             DateTime finishDate = DateTime.Now + overallWorkoutTimeSpan;
-            FinishStr = finishDate.ToString("yyyy-MM-dd");
+            FinishStr = finishDate.ToString("yy-MM-dd HH:mm");
         }
 
         public string TotalDistanceStr { get; set; }

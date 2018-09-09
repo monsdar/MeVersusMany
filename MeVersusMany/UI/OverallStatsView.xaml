@@ -43,7 +43,7 @@
                 </Border>
 
                 <Label FontSize="12" Grid.Row="4" Grid.Column="0">Million Meters at</Label>
-                <Label x:Name="FinishStr" FontSize="48" HorizontalContentAlignment="Right" Grid.Row="4" Grid.Column="1">2018-12-31</Label>
+                <Label x:Name="FinishStr" FontSize="48" HorizontalContentAlignment="Right" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">18-12-31 11:45</Label>
             </Grid>
         </Border>
     </StackPanel>
