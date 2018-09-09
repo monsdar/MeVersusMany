@@ -122,7 +122,7 @@ namespace MeVersusMany.Storage
             int numCompleted = (int)(timestamp / TotalExerciseTime);
             if (timestamp > TotalExerciseTime)
             {
-                timestamp = (TotalExerciseTime % timestamp);
+                timestamp = (timestamp % TotalExerciseTime);
             }
 
             //update the values to reflect what's been stored at the given timestamp
