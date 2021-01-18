@@ -7,31 +7,23 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600">
 
-    <StackPanel Width="600">
-        <Label>Total</Label>
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Width="Auto">
+        <Label DockPanel.Dock="Top">Total</Label>
         <ListBox 
+            HorizontalContentAlignment="Stretch"
             ItemsSource="{Binding RankedErgList}"
             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
             ScrollViewer.VerticalScrollBarVisibility="Disabled">
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid MinWidth="550">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-
-                        <Label MinWidth="40" FontSize="24" Grid.Column="0" Content="{Binding PositionStr}"/>
-                        <Label HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="24" Grid.Column="1" Foreground="{Binding Color}" Content="{Binding Name}"/>
-                        <Label MinWidth="90" HorizontalContentAlignment="Right" FontSize="24" Grid.Column="2" Content="{Binding DistanceStr}"/>
-                    </Grid>
+                    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <Label DockPanel.Dock="Left" MinWidth="40" FontSize="24" Content="{Binding PositionStr}"/>
+                        <Label DockPanel.Dock="Right" MinWidth="90" HorizontalContentAlignment="Right" FontSize="24" Content="{Binding DistanceStr}"/>
+                        <Label FontSize="24" Foreground="{Binding Color}" Content="{Binding Name}"/>
+                    </DockPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-    </StackPanel>
+    </DockPanel>
 </UserControl>

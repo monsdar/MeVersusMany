@@ -32,12 +32,37 @@ namespace MeVersusMany.Storage
             {
                 seed += letter;
             }
-            RandomNameProvider.Seed = seed;
-            Name = "Ghost " + RandomNameProvider.RandomName;
             rnd = new Random(seed);
             Byte[] b = new Byte[3];
             rnd.NextBytes(b);
             ErgColor = Color.FromRgb(b[0], b[1], b[2]);
+
+            RandomNameProvider.Seed = seed;
+            InitName(filepath);
+        }
+
+        private void InitName(string filepath)
+        {
+            //Regex: session_([0-9-_]*)\.*(.*).db
+
+            //Input: .\\session_17-10-18_18-26-14.Fred.db
+            //Group 1: 17-10-18_18-26-14
+            //Group 2: Fred
+
+            //Input: .\\session_17-10-18_18-26-14.db
+            //Group 1: 17-10-18_18-26-14
+            //Group 2: <empty>
+
+            var pattern = "session_([0-9-_]*)\\.*(.*).db";
+            var match = Regex.Match(filepath, pattern);
+            if (match.Groups.Count >= 3 && !string.IsNullOrEmpty(match.Groups[2].Value))
+            {
+                Name = "Ghost " + match.Groups[2].Value;
+            }
+            else
+            {
+                Name = "Ghost " + RandomNameProvider.RandomName;
+            }
         }
 
         private void InitWorkoutDate(string filepath)
@@ -46,7 +71,7 @@ namespace MeVersusMany.Storage
             //Regex: session_([0-9-_]*).db
             //Group: 17-10-18_18-26-14
 
-            var pattern = "session_([0-9-_]*).db";
+            var pattern = "session_([0-9-_]*)\\.*(.*).db";
             var match = Regex.Match(filepath, pattern);
             if(match.Groups.Count >= 2)
             { 

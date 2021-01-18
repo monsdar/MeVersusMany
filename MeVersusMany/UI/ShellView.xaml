@@ -4,16 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MeVersusMany">
-    <StackPanel>
-        <Menu>
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Width="Auto">
+        <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Menu">
                 <MenuItem x:Name="ExitApplication" Header="Exit"/>
             </MenuItem>
         </Menu>
-        <StackPanel Orientation="Horizontal">
-            <ContentControl x:Name="PlayerStats"/>
+        <DockPanel>
+            <ContentControl x:Name="PlayerStats" DockPanel.Dock="Left"/>
+            <ContentControl x:Name="OverallStats" DockPanel.Dock="Right"/>
             <ContentControl x:Name="Ranking"/>
-            <ContentControl x:Name="OverallStats"/>
-        </StackPanel>
-    </StackPanel>
+        </DockPanel>
+    </DockPanel>
 </UserControl>

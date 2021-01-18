@@ -18,8 +18,8 @@
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200" />
-                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
                 <Border BorderBrush="Gray" BorderThickness="0 0 2 2" Background="White" Grid.Row="0" Grid.Column="0">
