@@ -13,7 +13,7 @@
         <DockPanel>
             <ContentControl x:Name="PlayerStats" DockPanel.Dock="Left"/>
             <ContentControl x:Name="OverallStats" DockPanel.Dock="Right"/>
-            <ContentControl x:Name="Ranking"/>
+            <ContentControl x:Name="Ranking" MinWidth="500"/>
         </DockPanel>
     </DockPanel>
 </UserControl>

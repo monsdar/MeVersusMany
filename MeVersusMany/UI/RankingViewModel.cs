@@ -4,15 +4,16 @@ using MeVersusMany.DataModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Windows.Controls;
-using System.Windows.Data;
+using System.Linq;
 using System.Windows.Media;
 
 namespace MeVersusMany.UI
 {
     class RankingViewModel : Screen
     {
+        public double MaxTotalRange { get; } = 50.0;
+        public double MinTotalRange { get; } = 5.0;
+
         public ObservableCollection<RankItem> RankedErgList { get; set; }
         private int maxErgsInList = 10; //How many ergs should be shown
 
@@ -38,7 +39,14 @@ namespace MeVersusMany.UI
             List<IErg> tempSortableList = new List<IErg>();
             tempSortableList.AddRange(givenErgs);
             tempSortableList.Sort((x, y) => y.Distance.CompareTo(x.Distance));
-            
+
+            //get the range where we want to display the boats in
+            var totalRange = Math.Abs(tempSortableList.Last().Distance - tempSortableList.First().Distance);
+            if (totalRange > MaxTotalRange) totalRange = MaxTotalRange;
+            if (totalRange < MinTotalRange) totalRange = MinTotalRange;
+
+            //NOTE: Instead of updating the actual values we're clearing and repopulating the whole list each frame.
+            //      This is very performance heavy and not the best design. See LaneDisplay for the kind of workaround this causes.
             RankedErgList.Clear();
             RankItem player = null;
             for (int index = 0; index < tempSortableList.Count; index++) //we need the index, so use a for-loop instead of foreach
@@ -48,8 +56,9 @@ namespace MeVersusMany.UI
                 var newRankItem = new RankItem()
                 {
                     Erg = erg,
-                    Position = index+1,
-                    BaseDistance = baseDistance
+                    Position = index + 1,
+                    BaseDistance = baseDistance,
+                    TotalRange = totalRange
                 };
                 RankedErgList.Add(newRankItem);
 
@@ -68,7 +77,6 @@ namespace MeVersusMany.UI
             RankedErgList = TrimListAroundIndex(RankedErgList, playerIndex, maxErgsInList, true, true);
 
             //TODO: Add background color depending on current pace vs average pace (indicate when a rower is over/underperforming to let the user know when to attack or defend)
-            //TODO: Add some progress bar to better visualize the distance for the user
         }
 
         public ObservableCollection<RankItem> TrimListAroundIndex(ObservableCollection<RankItem> givenList, int givenIndex, int maxItems, bool keepFirst, bool keepLast)
@@ -91,7 +99,7 @@ namespace MeVersusMany.UI
                 slotsLeft--;
             }
 
-            //if we need to keep the last item drecrease the slots, we'll add this item in the end then
+            //if we need to keep the last item decrease the slots, we'll add this item in the end then
             if (keepLast && givenIndex != (givenList.Count-1))
             {
                 lastIndex--;
@@ -146,6 +154,7 @@ namespace MeVersusMany.UI
         public IErg Erg { get; set; }
         public int Position { get; set; }
         public double BaseDistance { get; set; }
+        public double TotalRange { get; set; }
 
         public string PositionStr
         {
@@ -161,6 +170,15 @@ namespace MeVersusMany.UI
                 return Erg.Name;
             }
         }
+
+        public double Distance
+        {
+            get
+            {
+                return (Erg.Distance - BaseDistance);
+            }
+        }
+
         public string DistanceStr
         {
             get

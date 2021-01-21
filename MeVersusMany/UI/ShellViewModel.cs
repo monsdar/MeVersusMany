@@ -6,6 +6,7 @@ using MeVersusMany.Storage;
 using System.Collections.Generic;
 using System.IO;
 using MeVersusMany.DataModel;
+using System.Diagnostics;
 
 namespace MeVersusMany.UI
 {
@@ -28,7 +29,9 @@ namespace MeVersusMany.UI
             eventAggregator.Subscribe(this);
 
             //get a connection to the C2 ergometer
+
             c2erg = new C2Erg(0); //always work with the first connected erg (address == 0)
+            //c2erg = new SqliteErg("session_21-1-19_11-52-27.Kickstarter.db"); //NOTE: use a ghost as primary erg for testing purposes
             storage = new SqliteWriter();
 
             //get all recorded sessions
@@ -53,7 +56,9 @@ namespace MeVersusMany.UI
             if(c2erg.IsWorkoutStarted())
             {
                 //TODO: We should update the values in a thread somewhere else... do not hog the UI-Thread with this
-                c2erg.Update(0.0);
+                //C2Erg ignores the timestamp, Ghost-Ergs need some kind of continuous timer. Calculating the timestamp anyways is for testing purposes.
+                var timeElapsed = DateTime.UtcNow - Process.GetCurrentProcess().StartTime.ToUniversalTime();
+                c2erg.Update(timeElapsed.TotalSeconds + 120);
                 foreach (SqliteErg recordErg in recordedErgs)
                 {
                     recordErg.Update(c2erg.ExerciseTime);

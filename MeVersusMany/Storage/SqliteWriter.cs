@@ -29,7 +29,7 @@ namespace MeVersusMany
                 db = new SQLiteConnection(filename);
                 db.CreateTable<rowdata>();
             }
-
+            
             var s = db.Insert(new rowdata()
             {
                 avgpace = 0.0,
@@ -42,7 +42,6 @@ namespace MeVersusMany
                 spm = givenErg.Cadence,
                 timestamp = givenErg.ExerciseTime
             });
-
         }
     }
 }
