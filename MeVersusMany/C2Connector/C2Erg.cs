@@ -14,6 +14,7 @@ namespace MeVersusMany.C2Connector
         public double ExerciseTime { get; set; }
         public uint Cadence { get; set; }
         public double PaceInSecs { get; set; }
+        public double FuturePaceInSecs { get; set; } = 0.0;
         public uint Calories { get; set; }
         public uint Power { get; set; }
         public uint Heartrate { get; set; }

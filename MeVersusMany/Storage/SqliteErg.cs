@@ -4,6 +4,7 @@ using MeVersusMany.DataModel;
 using System.Windows.Media;
 using MeVersusMany.Util;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace MeVersusMany.Storage
 {
@@ -151,7 +152,7 @@ namespace MeVersusMany.Storage
             }
 
             //update the values to reflect what's been stored at the given timestamp
-            var results = db.Query<rowdata>("SELECT * FROM rowdata WHERE timestamp >= ? LIMIT 1;", (timestamp));
+            var results = db.Query<rowdata>($"SELECT * FROM rowdata WHERE timestamp >= ? LIMIT 1;", timestamp);
             if(results.Count > 0)
             {
                 Distance = results[0].distance + (numCompleted * TotalDistance);
@@ -161,6 +162,17 @@ namespace MeVersusMany.Storage
                 Calories = results[0].calories;
                 Power = results[0].power;
                 Heartrate = results[0].heartrate;
+
+                //only query for future values when there's at least one value we can work with
+                try
+                {
+                    var resultAvg = db.ExecuteScalar<float>($"SELECT AVG(pace) FROM rowdata WHERE timestamp >= ? AND timestamp < ?; ", timestamp, timestamp+30.0);
+                    FuturePaceInSecs = resultAvg;
+                }
+                catch (Exception)
+                {
+                    //do nothing in here... FuturePaceInSecs can stay as it is
+                }
             }
         }
 
@@ -169,6 +181,7 @@ namespace MeVersusMany.Storage
         public double ExerciseTime { get; set; }
         public uint Cadence { get; set; }
         public double PaceInSecs { get; set; }
+        public double FuturePaceInSecs { get; set; } = 0.0;
         public uint Calories { get; set; }
         public uint Power { get; set; }
         public uint Heartrate { get; set; }

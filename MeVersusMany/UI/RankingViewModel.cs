@@ -171,6 +171,14 @@ namespace MeVersusMany.UI
             }
         }
 
+        public double PaceProgression
+        {
+            get
+            {
+                return (Erg.FuturePaceInSecs - Erg.PaceInSecs);
+            }
+        }
+
         public double Distance
         {
             get

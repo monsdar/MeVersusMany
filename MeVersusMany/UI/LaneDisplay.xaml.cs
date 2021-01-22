@@ -57,7 +57,7 @@ namespace MeVersusMany.UI
             set { SetValue(BoatColorProperty, value); }
         }
         public static readonly DependencyProperty BoatColorProperty =
-            DependencyProperty.Register("BoatColor", typeof(Brush), typeof(LaneDisplay), new PropertyMetadata(Brushes.Red));
+            DependencyProperty.Register("BoatColor", typeof(Brush), typeof(LaneDisplay), new PropertyMetadata(Brushes.White));
         public double MaxDistance
         {
             get { return (double)GetValue(MaxDistanceProperty); }
@@ -72,6 +72,13 @@ namespace MeVersusMany.UI
         }
         public static readonly DependencyProperty BaseDistanceProperty =
             DependencyProperty.Register("BaseDistance", typeof(double), typeof(LaneDisplay), new PropertyMetadata(0.0));
+        public double PaceProgression
+        {
+            get { return (double)GetValue(PaceProgressionProperty); }
+            set { SetValue(PaceProgressionProperty, value); }
+        }
+        public static readonly DependencyProperty PaceProgressionProperty =
+            DependencyProperty.Register("PaceProgression", typeof(double), typeof(LaneDisplay), new PropertyMetadata(0.0));
 
         private IEnumerable<Line> GetLines(int lineDistance, double baseDistance, double maxDistance, double canvasWidth, double lineWidth)
         {
@@ -96,6 +103,8 @@ namespace MeVersusMany.UI
             var canvasWidth = canvas.ActualWidth;
             var canvasHeight = canvas.ActualHeight;
 
+
+            //paint the lines
             var smallLines = GetLines(10, BaseDistance, MaxDistance, canvasWidth, 1.0);
             foreach (var line in smallLines)
             {
@@ -107,24 +116,13 @@ namespace MeVersusMany.UI
                 canvas.Children.Add(line);
             }
 
-            var lineDistance = 10;
-            var minVisibleDistance = BaseDistance - MaxDistance;
-            var maxVisibleDistance = BaseDistance + MaxDistance;
-            var firstLine = (int)(minVisibleDistance / lineDistance) * lineDistance; //round to the nearest value dividable by lineDistance
-            for (double currentDist = firstLine; currentDist <= maxVisibleDistance; currentDist+=lineDistance)
-            {
-                var factor = (currentDist-minVisibleDistance) / (maxVisibleDistance-minVisibleDistance);
-                var posX = factor * canvasWidth;
-                var newLine = GetVerticalLine(posX, 1);
-                canvas.Children.Add(newLine);
-            }
-
-            //do not paint anything that is outside of our range to display
+            //do not paint the boat when it is outside of our range to display
             if (Math.Abs(CurrentDistance) > MaxDistance)
             {
                 return;
             }
 
+            //paint the boat
             var currentPosPoint = (canvasWidth / 2.0) + ((CurrentDistance / MaxDistance) * (canvasWidth / 2.0));
             var actualBoatSize = 5.0;
             var canvasBoatSize = (actualBoatSize / (MaxDistance * 2.0)) * canvasWidth;
@@ -138,6 +136,27 @@ namespace MeVersusMany.UI
             points.Add(new Point(currentPosPoint - canvasBoatSize, lowerBounds));
             points.Add(new Point(currentPosPoint - canvasBoatSize / 2.0, lowerBounds));
             boat.Points = points;
+
+            //display the boat redder when it is making pace, bluer when it slows down
+            var limitedPaceProgression = Math.Abs(PaceProgression);
+            if (limitedPaceProgression > 10.0) limitedPaceProgression = 10.0;
+            if (limitedPaceProgression < 2.0) limitedPaceProgression = 0.0;
+            
+            byte red = 255;
+            byte green = 255;
+            byte blue = 255;
+            var modifier = (byte)((limitedPaceProgression / 10.0) * 255.0);
+            if (PaceProgression > 0.0)
+            {
+                green -= modifier;
+                blue -= modifier;
+            }
+            else
+            {
+                green -= modifier;
+                red -= modifier;
+            }
+            boat.Fill = new SolidColorBrush(new Color() { A = 255, R = red, G = green, B = blue });
 
             canvas.InvalidateVisual();
         }

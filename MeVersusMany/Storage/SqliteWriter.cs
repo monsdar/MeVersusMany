@@ -5,12 +5,14 @@ namespace MeVersusMany
 {
     public class SqliteWriter
     {
+        bool dryRun = false;
         string filename = "";
         SQLiteConnection db = null;
 
-        public SqliteWriter()
+        public SqliteWriter(bool dryRun = false)
         {
             filename = "session_" + System.DateTime.Now.ToString("%y-%M-%d_%H-%m-%s") + ".db";
+            this.dryRun = dryRun;
         }
 
         ~SqliteWriter()
@@ -24,6 +26,11 @@ namespace MeVersusMany
 
         public void PerformUpdate(DataModel.IErg givenErg)
         {
+            if(dryRun)
+            {
+                return;
+            }
+
             if(db == null)
             {
                 db = new SQLiteConnection(filename);
