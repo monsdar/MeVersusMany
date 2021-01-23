@@ -12,7 +12,7 @@ namespace MeVersusMany.UI
     class RankingViewModel : Screen
     {
         public double MaxTotalRange { get; } = 100.0;
-        public double MinTotalRange { get; } = 5.0;
+        public double MinTotalRange { get; } = 40.0;
 
         public ObservableCollection<RankItem> RankedErgList { get; set; }
         private int maxErgsInList = 13; //How many ergs should be shown
@@ -40,11 +40,6 @@ namespace MeVersusMany.UI
             tempSortableList.AddRange(givenErgs);
             tempSortableList.Sort((x, y) => y.Distance.CompareTo(x.Distance));
 
-            //get the range where we want to display the boats in
-            var totalRange = Math.Abs(tempSortableList.Last().Distance - tempSortableList.First().Distance);
-            if (totalRange > MaxTotalRange) totalRange = MaxTotalRange;
-            if (totalRange < MinTotalRange) totalRange = MinTotalRange;
-
             //NOTE: Instead of updating the actual values we're clearing and repopulating the whole list each frame.
             //      This is very performance heavy and not the best design. See LaneDisplay for the kind of workaround this causes.
             RankedErgList.Clear();
@@ -58,7 +53,7 @@ namespace MeVersusMany.UI
                     Erg = erg,
                     Position = index + 1,
                     BaseDistance = baseDistance,
-                    TotalRange = totalRange
+                    TotalRange = 0.0
                 };
                 RankedErgList.Add(newRankItem);
 
@@ -74,7 +69,17 @@ namespace MeVersusMany.UI
             {
                 playerIndex = 0;
             }
-            RankedErgList = TrimListAroundIndex(RankedErgList, playerIndex, maxErgsInList, true, true);
+            RankedErgList = TrimListAroundIndex(RankedErgList, playerIndex, maxErgsInList, true, false);
+
+            //get the range where we want to display the boats in
+            //we do this after trimming around the index, else we'd care for boats that aren't visible anyways.
+            var totalRange = Math.Abs(RankedErgList.Last().Distance - RankedErgList.First().Distance);
+            if (totalRange > MaxTotalRange) totalRange = MaxTotalRange;
+            if (totalRange < MinTotalRange) totalRange = MinTotalRange;
+            foreach (var erg in RankedErgList)
+            {
+                erg.TotalRange = totalRange;
+            }
         }
 
         public ObservableCollection<RankItem> TrimListAroundIndex(ObservableCollection<RankItem> givenList, int givenIndex, int maxItems, bool keepFirst, bool keepLast)
@@ -197,6 +202,17 @@ namespace MeVersusMany.UI
             get
             {
                 return new SolidColorBrush(Erg.ErgColor);
+            }
+        }
+        public Brush WaterColor
+        {
+            get
+            {
+                if(Erg.IsPlayer)
+                {
+                    return Brushes.Lavender;
+                }
+                return Brushes.AliceBlue;
             }
         }
     }

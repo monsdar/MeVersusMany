@@ -23,6 +23,7 @@
                             BaseDistance="{Binding BaseDistance}" 
                             PaceProgression="{Binding PaceProgression}"
                             BoatColor="{Binding Color}"
+                            WaterColor="{Binding WaterColor}"
                             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Canvas.ZIndex="1"/>
                         <DockPanel Canvas.ZIndex="2">
                             <Label DockPanel.Dock="Left" MinWidth="40" FontSize="24" Content="{Binding PositionStr}"/>

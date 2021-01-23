@@ -24,7 +24,6 @@ namespace MeVersusMany.UI
             boat.Stroke = Brushes.Black;
             boat.Fill = fill;
             canvas.Children.Add(boat);
-            canvas.Background = Brushes.AliceBlue;
 
             canvas.Loaded += Canvas_Loaded;
         }
@@ -50,7 +49,7 @@ namespace MeVersusMany.UI
             set { SetValue(WaterColorProperty, value); }
         }
         public static readonly DependencyProperty WaterColorProperty =
-            DependencyProperty.Register("WaterColor", typeof(Brush), typeof(LaneDisplay), new PropertyMetadata(Brushes.Blue));
+            DependencyProperty.Register("WaterColor", typeof(Brush), typeof(LaneDisplay), new PropertyMetadata(Brushes.AliceBlue));
         public Brush BoatColor
         {
             get { return (Brush)GetValue(BoatColorProperty); }
@@ -103,6 +102,7 @@ namespace MeVersusMany.UI
             var canvasWidth = canvas.ActualWidth;
             var canvasHeight = canvas.ActualHeight;
 
+            canvas.Background = WaterColor;
 
             //paint the lines
             var smallLines = GetLines(10, BaseDistance, MaxDistance, canvasWidth, 1.0);
@@ -141,8 +141,8 @@ namespace MeVersusMany.UI
 
             //display the boat redder when it is making pace, bluer when it slows down
             var limitedPaceProgression = Math.Abs(PaceProgression);
-            if (limitedPaceProgression > 10.0) limitedPaceProgression = 10.0;
-            if (limitedPaceProgression < 2.0) limitedPaceProgression = 0.0;
+            if (limitedPaceProgression > 10.0) limitedPaceProgression = 10.0; //a change in pace for more than 10 seconds should be displayed in bright color. Doesn't matter if its just 11 seconds or 60 seconds
+            if (limitedPaceProgression < 2.0) limitedPaceProgression = 0.0; //do not display every small change in pace... Boats are lighting up left and right if we don't cap that
             
             byte red = 0;
             byte green = 0;
@@ -150,16 +150,17 @@ namespace MeVersusMany.UI
             var modifier = (byte)((limitedPaceProgression / 10.0) * 255.0);
             if (PaceProgression > 0.0)
             {
-                red += modifier;
+                blue += modifier;
             }
             else
             {
-                blue += modifier;
+                red += modifier;
             }
             boat.Stroke = new SolidColorBrush(new Color() { A = 255, R = red, G = green, B = blue });
             var fill = BoatColor.Clone();
             fill.Opacity = 0.5;
             boat.Fill = fill;
+            boat.StrokeThickness = 3.0;
 
             canvas.InvalidateVisual();
         }
