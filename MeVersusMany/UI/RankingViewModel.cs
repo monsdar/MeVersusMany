@@ -11,11 +11,11 @@ namespace MeVersusMany.UI
 {
     class RankingViewModel : Screen
     {
-        public double MaxTotalRange { get; } = 50.0;
+        public double MaxTotalRange { get; } = 100.0;
         public double MinTotalRange { get; } = 5.0;
 
         public ObservableCollection<RankItem> RankedErgList { get; set; }
-        private int maxErgsInList = 10; //How many ergs should be shown
+        private int maxErgsInList = 13; //How many ergs should be shown
 
         public RankingViewModel(List<IErg> recordedErgs)
         {
@@ -75,8 +75,6 @@ namespace MeVersusMany.UI
                 playerIndex = 0;
             }
             RankedErgList = TrimListAroundIndex(RankedErgList, playerIndex, maxErgsInList, true, true);
-
-            //TODO: Add background color depending on current pace vs average pace (indicate when a rower is over/underperforming to let the user know when to attack or defend)
         }
 
         public ObservableCollection<RankItem> TrimListAroundIndex(ObservableCollection<RankItem> givenList, int givenIndex, int maxItems, bool keepFirst, bool keepLast)

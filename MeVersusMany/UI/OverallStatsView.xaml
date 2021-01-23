@@ -5,45 +5,47 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MeVersusMany">
     <StackPanel>
-        <Label>Total</Label>
         <Border CornerRadius="6" BorderBrush="Gray" BorderThickness="2" Background="White">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100" />
-                    <ColumnDefinition Width="260" />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-
-                <Label FontSize="12" Grid.Row="0" Grid.Column="0">Distance</Label>
-                <Label x:Name="TotalDistanceStr" FontSize="48" HorizontalContentAlignment="Right" Grid.Row="0" Grid.Column="1">31337.00 m</Label>
-
-                <Border BorderBrush="Gray" BorderThickness="0 2 0 2" Background="White" Grid.Row="1" Grid.Column="0">
-                    <Label FontSize="12">Time</Label>
-                </Border>
-                <Border BorderBrush="Gray" BorderThickness="0 2 0 2" Background="White" Grid.Row="1" Grid.Column="1">
-                    <Label x:Name="TotalExTimeStr" FontSize="48" HorizontalContentAlignment="Right">12:12:32</Label>
+                <Border BorderBrush="Gray" BorderThickness="2 2 2 2" Background="White" Grid.Row="0" Grid.Column="0">
+                    <Grid>
+                        <Label FontSize="12">Total Distance</Label>
+                        <Label x:Name="TotalDistanceStr" FontSize="48" HorizontalContentAlignment="Right">31337.00 m</Label>
+                    </Grid>
                 </Border>
 
-                <Label FontSize="12" Grid.Row="2" Grid.Column="0">AvgPace</Label>
-                <Label x:Name="TotalAvgPaceStr" FontSize="48" HorizontalContentAlignment="Right" Grid.Row="2" Grid.Column="1">02:15.234</Label>
 
-                <Border BorderBrush="Gray" BorderThickness="0 2 0 2" Background="White" Grid.Row="3" Grid.Column="0">
-                    <Label FontSize="12">Position</Label>
-                </Border>
-                <Border BorderBrush="Gray" BorderThickness="0 2 0 2" Background="White" Grid.Row="3" Grid.Column="1">
-                    <Label x:Name="PositionStr" FontSize="48" HorizontalContentAlignment="Right">5/10</Label>
+                <Border BorderBrush="Gray" BorderThickness="2 2 2 2" Background="White" Grid.Row="1" Grid.Column="0">
+                    <Grid>
+                        <Label FontSize="12">Average Pace</Label>
+                        <Label x:Name="TotalAvgPaceStr" FontSize="48" HorizontalContentAlignment="Right">02:15.234</Label>
+                    </Grid>
                 </Border>
 
-                <Label FontSize="12" Grid.Row="4" Grid.Column="0">Million Meters at</Label>
-                <Label x:Name="FinishStr" FontSize="48" HorizontalContentAlignment="Right" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">18-12-31 11:45</Label>
+                <Border BorderBrush="Gray" BorderThickness="2 2 2 2" Background="White" Grid.Row="0" Grid.Column="1">
+                    <Grid>
+                        <Label FontSize="12" Grid.Row="0" Grid.Column="1">Total Time</Label>
+                        <Label x:Name="TotalExTimeStr" FontSize="48" HorizontalContentAlignment="Right" Grid.Row="0" Grid.Column="1">12:12:32</Label>
+                    </Grid>
+                </Border>
+
+                <Border BorderBrush="Gray" BorderThickness="2 2 2 2" Background="White" Grid.Row="1" Grid.Column="1">
+                    <Grid>
+                        <Label FontSize="12" Grid.Row="1" Grid.Column="1">Million Meters at</Label>
+                        <Label x:Name="FinishStr" FontSize="48" HorizontalContentAlignment="Right" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">18-12-31 11:45</Label>
+                    </Grid>
+                </Border>
+                
             </Grid>
         </Border>
     </StackPanel>

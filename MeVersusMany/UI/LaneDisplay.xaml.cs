@@ -124,16 +124,18 @@ namespace MeVersusMany.UI
 
             //paint the boat
             var currentPosPoint = (canvasWidth / 2.0) + ((CurrentDistance / MaxDistance) * (canvasWidth / 2.0));
-            var actualBoatSize = 5.0;
+            var actualBoatSize = 8.2;
             var canvasBoatSize = (actualBoatSize / (MaxDistance * 2.0)) * canvasWidth;
             var upperBounds = canvasHeight / 4.0;
             var lowerBounds = canvasHeight - (canvasHeight / 4.0);
+            var upperBoundsBack = canvasHeight / 3.0;
+            var lowerBoundsBack = canvasHeight - (canvasHeight / 3.0);
 
             var points = new PointCollection();
             points.Add(new Point(currentPosPoint, canvasHeight / 2.0));
             points.Add(new Point(currentPosPoint - canvasBoatSize / 2.0, upperBounds));
-            points.Add(new Point(currentPosPoint - canvasBoatSize, upperBounds));
-            points.Add(new Point(currentPosPoint - canvasBoatSize, lowerBounds));
+            points.Add(new Point(currentPosPoint - canvasBoatSize, upperBoundsBack));
+            points.Add(new Point(currentPosPoint - canvasBoatSize, lowerBoundsBack));
             points.Add(new Point(currentPosPoint - canvasBoatSize / 2.0, lowerBounds));
             boat.Points = points;
 
@@ -142,21 +144,22 @@ namespace MeVersusMany.UI
             if (limitedPaceProgression > 10.0) limitedPaceProgression = 10.0;
             if (limitedPaceProgression < 2.0) limitedPaceProgression = 0.0;
             
-            byte red = 255;
-            byte green = 255;
-            byte blue = 255;
+            byte red = 0;
+            byte green = 0;
+            byte blue = 0;
             var modifier = (byte)((limitedPaceProgression / 10.0) * 255.0);
             if (PaceProgression > 0.0)
             {
-                green -= modifier;
-                blue -= modifier;
+                red += modifier;
             }
             else
             {
-                green -= modifier;
-                red -= modifier;
+                blue += modifier;
             }
-            boat.Fill = new SolidColorBrush(new Color() { A = 255, R = red, G = green, B = blue });
+            boat.Stroke = new SolidColorBrush(new Color() { A = 255, R = red, G = green, B = blue });
+            var fill = BoatColor.Clone();
+            fill.Opacity = 0.5;
+            boat.Fill = fill;
 
             canvas.InvalidateVisual();
         }

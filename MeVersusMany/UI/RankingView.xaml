@@ -8,7 +8,6 @@
              d:DesignHeight="300" d:DesignWidth="600">
 
     <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="Auto" Width="Auto">
-        <Label DockPanel.Dock="Top">Total</Label>
         <ListBox 
             HorizontalContentAlignment="Stretch"
             ItemsSource="{Binding RankedErgList}"
@@ -23,6 +22,7 @@
                             MaxDistance="{Binding TotalRange}"
                             BaseDistance="{Binding BaseDistance}" 
                             PaceProgression="{Binding PaceProgression}"
+                            BoatColor="{Binding Color}"
                             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Canvas.ZIndex="1"/>
                         <DockPanel Canvas.ZIndex="2">
                             <Label DockPanel.Dock="Left" MinWidth="40" FontSize="24" Content="{Binding PositionStr}"/>
