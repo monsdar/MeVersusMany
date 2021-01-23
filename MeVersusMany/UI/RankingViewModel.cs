@@ -62,7 +62,7 @@ namespace MeVersusMany.UI
                 };
                 RankedErgList.Add(newRankItem);
 
-                if(erg.Name == "Player") //TODO: This relies on the Player-Erg being named "Player"... We shouldn't rely on implementation details we have no control over
+                if(erg.IsPlayer)
                 {
                     player = newRankItem;
                 }

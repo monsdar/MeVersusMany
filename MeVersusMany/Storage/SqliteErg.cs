@@ -138,7 +138,7 @@ namespace MeVersusMany.Storage
         public void Update(double timestamp)
         {
             //do not update if nothing changed (or simply not enough has changed)...
-            if(Math.Abs(lastTimestamp - timestamp) < timestampDelta)
+            if (Math.Abs(lastTimestamp - timestamp) < timestampDelta)
             {
                 return;
             }
@@ -153,7 +153,7 @@ namespace MeVersusMany.Storage
 
             //update the values to reflect what's been stored at the given timestamp
             var results = db.Query<rowdata>($"SELECT * FROM rowdata WHERE timestamp >= ? LIMIT 1;", timestamp);
-            if(results.Count > 0)
+            if (results.Count > 0)
             {
                 Distance = results[0].distance + (numCompleted * TotalDistance);
                 ExerciseTime = results[0].timestamp;
@@ -166,7 +166,7 @@ namespace MeVersusMany.Storage
                 //only query for future values when there's at least one value we can work with
                 try
                 {
-                    var resultAvg = db.ExecuteScalar<float>($"SELECT AVG(pace) FROM rowdata WHERE timestamp >= ? AND timestamp < ?; ", timestamp, timestamp+30.0);
+                    var resultAvg = db.ExecuteScalar<float>($"SELECT AVG(pace) FROM rowdata WHERE timestamp >= ? AND timestamp < ?; ", timestamp, timestamp + 30.0);
                     FuturePaceInSecs = resultAvg;
                 }
                 catch (Exception)
@@ -175,7 +175,7 @@ namespace MeVersusMany.Storage
                 }
             }
         }
-
+        public bool IsPlayer { get; set; } = false;
         public string Name { get; set; }
         public double Distance { get; set; }
         public double ExerciseTime { get; set; }

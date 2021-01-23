@@ -9,6 +9,7 @@ namespace MeVersusMany.C2Connector
     {
         PerformanceMonitor pm;
 
+        public bool IsPlayer { get; set; } = true;
         public string Name { get; set; }
         public double Distance { get; set; }
         public double ExerciseTime { get; set; }

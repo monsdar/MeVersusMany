@@ -38,10 +38,12 @@ namespace MeVersusMany.UI
             if(dryRun)
             {
                 c2erg = new SqliteErg("session_21-1-19_11-52-27.Kickstarter.db"); //NOTE: use a ghost as primary erg for testing purposes
+                c2erg.IsPlayer = true;
             }
             else
             {
                 c2erg = new C2Erg(0); //always work with the first connected erg (address == 0)
+                c2erg.IsPlayer = true;
             }
             storage = new SqliteWriter(dryRun);
 
@@ -70,7 +72,7 @@ namespace MeVersusMany.UI
                 //NOTE: C2Erg ignores the timestamp, Ghost-Ergs need some kind of continuous timer. Calculating the timestamp anyways is for dryRun
                 var timeElapsed = DateTime.UtcNow - Process.GetCurrentProcess().StartTime.ToUniversalTime();
                 c2erg.Update(timeElapsed.TotalSeconds + 120);
-                foreach (SqliteErg recordErg in recordedErgs)
+                foreach (IErg recordErg in recordedErgs)
                 {
                     recordErg.Update(c2erg.ExerciseTime);
                 }

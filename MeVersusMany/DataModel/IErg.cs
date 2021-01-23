@@ -6,6 +6,7 @@ namespace MeVersusMany.DataModel
 {
     public interface IErg
     {
+        bool IsPlayer { get; set; }
         string Name { get; set; }
         double Distance { get; set; }
         double ExerciseTime { get; set; }
