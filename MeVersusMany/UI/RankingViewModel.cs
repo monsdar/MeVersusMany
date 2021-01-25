@@ -15,7 +15,7 @@ namespace MeVersusMany.UI
         public double MinTotalRange { get; } = 40.0;
 
         public ObservableCollection<RankItem> RankedErgList { get; set; }
-        private int maxErgsInList = 13; //How many ergs should be shown
+        private int maxErgsInList = 10; //How many ergs should be shown
 
         public RankingViewModel(List<IErg> recordedErgs)
         {
@@ -69,7 +69,7 @@ namespace MeVersusMany.UI
             {
                 playerIndex = 0;
             }
-            RankedErgList = TrimListAroundIndex(RankedErgList, playerIndex, maxErgsInList, true, false);
+            RankedErgList = TrimListAroundIndex(RankedErgList, playerIndex, maxErgsInList, false, false);
 
             //get the range where we want to display the boats in
             //we do this after trimming around the index, else we'd care for boats that aren't visible anyways.

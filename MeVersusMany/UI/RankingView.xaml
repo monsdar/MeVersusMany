@@ -26,9 +26,9 @@
                             WaterColor="{Binding WaterColor}"
                             HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Canvas.ZIndex="1"/>
                         <DockPanel Canvas.ZIndex="2">
-                            <Label DockPanel.Dock="Left" MinWidth="40" FontSize="24" Content="{Binding PositionStr}"/>
-                            <Label DockPanel.Dock="Right" MinWidth="90" HorizontalContentAlignment="Right" FontSize="24" Content="{Binding DistanceStr}"/>
-                            <Label FontSize="24" Foreground="{Binding Color}" Content="{Binding Name}"/>
+                            <Label DockPanel.Dock="Left" MinWidth="40" FontSize="32" Content="{Binding PositionStr}"/>
+                            <Label DockPanel.Dock="Right" MinWidth="90" HorizontalContentAlignment="Right" FontSize="32" Content="{Binding DistanceStr}"/>
+                            <Label FontSize="32" Foreground="{Binding Color}" Content="{Binding Name}"/>
                         </DockPanel>
                     </Grid>
                 </DataTemplate>

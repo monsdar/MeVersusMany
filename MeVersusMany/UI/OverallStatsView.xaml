@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:MeVersusMany">
+             xmlns:local="clr-namespace:MeVersusMany"
+             Width="1920">
     <StackPanel>
         <Border CornerRadius="6" BorderBrush="Gray" BorderThickness="2" Background="White">
             <Grid>
@@ -17,35 +18,29 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <Border BorderBrush="Gray" BorderThickness="2 2 2 2" Background="White" Grid.Row="0" Grid.Column="0">
-                    <Grid>
-                        <Label FontSize="12">Total Distance</Label>
-                        <Label x:Name="TotalDistanceStr" FontSize="48" HorizontalContentAlignment="Right">31337.00 m</Label>
-                    </Grid>
-                </Border>
+                <Border BorderBrush="Gray" BorderThickness="2 2 2 2" Background="White" Grid.Row="0" Grid.Column="0"/>
+                <Border BorderBrush="Gray" BorderThickness="2 2 2 2" Background="White" Grid.Row="1" Grid.Column="0"/>
+                <Border BorderBrush="Gray" BorderThickness="2 2 2 2" Background="White" Grid.Row="0" Grid.Column="1"/>
+                <Border BorderBrush="Gray" BorderThickness="2 2 2 2" Background="White" Grid.Row="1" Grid.Column="1"/>
+
+                <Grid Grid.Row="0" Grid.Column="0">
+                    <Label FontSize="12">Total Distance</Label>
+                    <Label x:Name="TotalDistanceStr" FontSize="64" HorizontalContentAlignment="Right">31337.00 m</Label>
+                </Grid>
+                <Grid Grid.Row="0" Grid.Column="1">
+                    <Label FontSize="12">Average Pace</Label>
+                    <Label x:Name="TotalAvgPaceStr" FontSize="64" HorizontalContentAlignment="Right">02:15.234</Label>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="0">
+                    <Label FontSize="12" Grid.Row="0" Grid.Column="1">Total Time</Label>
+                    <Label x:Name="TotalExTimeStr" FontSize="64" HorizontalContentAlignment="Right" Grid.Row="0" Grid.Column="1">12:12:32</Label>
+                </Grid>
+                <Grid Grid.Row="1" Grid.Column="1">
+                    <Label FontSize="12" Grid.Row="1" Grid.Column="1">Million Meters at</Label>
+                    <Label x:Name="FinishStr" FontSize="64" HorizontalContentAlignment="Right" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">18-12-31 11:45</Label>
+                </Grid>
 
 
-                <Border BorderBrush="Gray" BorderThickness="2 2 2 2" Background="White" Grid.Row="1" Grid.Column="0">
-                    <Grid>
-                        <Label FontSize="12">Average Pace</Label>
-                        <Label x:Name="TotalAvgPaceStr" FontSize="48" HorizontalContentAlignment="Right">02:15.234</Label>
-                    </Grid>
-                </Border>
-
-                <Border BorderBrush="Gray" BorderThickness="2 2 2 2" Background="White" Grid.Row="0" Grid.Column="1">
-                    <Grid>
-                        <Label FontSize="12" Grid.Row="0" Grid.Column="1">Total Time</Label>
-                        <Label x:Name="TotalExTimeStr" FontSize="48" HorizontalContentAlignment="Right" Grid.Row="0" Grid.Column="1">12:12:32</Label>
-                    </Grid>
-                </Border>
-
-                <Border BorderBrush="Gray" BorderThickness="2 2 2 2" Background="White" Grid.Row="1" Grid.Column="1">
-                    <Grid>
-                        <Label FontSize="12" Grid.Row="1" Grid.Column="1">Million Meters at</Label>
-                        <Label x:Name="FinishStr" FontSize="48" HorizontalContentAlignment="Right" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">18-12-31 11:45</Label>
-                    </Grid>
-                </Border>
-                
             </Grid>
         </Border>
     </StackPanel>
