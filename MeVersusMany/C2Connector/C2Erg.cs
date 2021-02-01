@@ -103,6 +103,7 @@ namespace MeVersusMany.C2Connector
             Heartrate = pm.Heartrate;
             PaceInSecs = (uint)pm.Pace;
             Power = pm.Power;
+            RecentPace = 500.0 / (Distance / ExerciseTime); //this is not recent, but total. It's the easiest way to calc something usable with what we've got.
         }
     }
 }
