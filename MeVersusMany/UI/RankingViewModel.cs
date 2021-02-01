@@ -71,6 +71,15 @@ namespace MeVersusMany.UI
             }
             RankedErgList = TrimListAroundIndex(RankedErgList, playerIndex, maxErgsInList, false, false);
 
+
+            //TODO: Besserer Übergang wenn man den Platz wechselt
+            //TODO: Standby verhindern
+            //TODO: Average Pace aus der Vergangenheit errechnen
+            //TODO: Average Pace auch für C2Erg
+            //TODO: Puls, Avg Puls, Avg SPM, Avg Watt
+            //TODO: Graphen für alle Zahlenwerte im Hintergrund anzeigen?
+
+
             //get the range where we want to display the boats in
             //we do this after trimming around the index, else we'd care for boats that aren't visible anyways.
             var totalRange = Math.Abs(RankedErgList.Last().Distance - RankedErgList.First().Distance);
@@ -178,7 +187,7 @@ namespace MeVersusMany.UI
         {
             get
             {
-                return (Erg.FuturePaceInSecs - Erg.PaceInSecs);
+                return (Erg.PaceInSecs - Erg.RecentPace);
             }
         }
 

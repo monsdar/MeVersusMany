@@ -166,8 +166,8 @@ namespace MeVersusMany.Storage
                 //only query for future values when there's at least one value we can work with
                 try
                 {
-                    var resultAvg = db.ExecuteScalar<float>($"SELECT AVG(pace) FROM rowdata WHERE timestamp >= ? AND timestamp < ?; ", timestamp, timestamp + 30.0);
-                    FuturePaceInSecs = resultAvg;
+                    var resultAvg = db.ExecuteScalar<float>($"SELECT AVG(pace) FROM rowdata WHERE timestamp <= ? AND timestamp > ?; ", timestamp, timestamp - 30.0);
+                    RecentPace = resultAvg;
                 }
                 catch (Exception)
                 {
@@ -181,7 +181,7 @@ namespace MeVersusMany.Storage
         public double ExerciseTime { get; set; }
         public uint Cadence { get; set; }
         public double PaceInSecs { get; set; }
-        public double FuturePaceInSecs { get; set; } = 0.0;
+        public double RecentPace { get; set; } = 0.0;
         public uint Calories { get; set; }
         public uint Power { get; set; }
         public uint Heartrate { get; set; }

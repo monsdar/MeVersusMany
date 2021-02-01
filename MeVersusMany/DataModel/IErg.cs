@@ -12,7 +12,7 @@ namespace MeVersusMany.DataModel
         double ExerciseTime { get; set; }
         uint Cadence { get; set; }
         double PaceInSecs { get; set; }
-        double FuturePaceInSecs { get; set; }
+        double RecentPace { get; set; }
         uint Calories { get; set; }
         uint Power { get; set; }
         uint Heartrate { get; set; }

@@ -142,7 +142,7 @@ namespace MeVersusMany.UI
             //display the boat redder when it is making pace, bluer when it slows down
             var limitedPaceProgression = Math.Abs(PaceProgression);
             if (limitedPaceProgression > 10.0) limitedPaceProgression = 10.0; //a change in pace for more than 10 seconds should be displayed in bright color. Doesn't matter if its just 11 seconds or 60 seconds
-            if (limitedPaceProgression < 2.0) limitedPaceProgression = 0.0; //do not display every small change in pace... Boats are lighting up left and right if we don't cap that
+            if (limitedPaceProgression < 1.0) limitedPaceProgression = 0.0; //do not display every small change in pace... Boats are lighting up left and right if we don't cap that
             
             byte red = 0;
             byte green = 0;
