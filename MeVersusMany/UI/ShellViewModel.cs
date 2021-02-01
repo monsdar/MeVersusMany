@@ -14,7 +14,7 @@ namespace MeVersusMany.UI
     class ShellViewModel : Screen
     {
         //activate this for testing purposes. When activated no actual Erg-connection will be made, instead a Ghost will be used a a player
-        bool dryRun = true;
+        bool dryRun = false;
 
 
 
