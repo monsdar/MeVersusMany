@@ -73,9 +73,6 @@ namespace MeVersusMany.UI
 
 
             //TODO: Besserer Übergang wenn man den Platz wechselt
-            //TODO: Standby verhindern
-            //TODO: Average Pace aus der Vergangenheit errechnen
-            //TODO: Average Pace auch für C2Erg
             //TODO: Puls, Avg Puls, Avg SPM, Avg Watt
             //TODO: Graphen für alle Zahlenwerte im Hintergrund anzeigen?
 

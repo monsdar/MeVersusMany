@@ -7,13 +7,14 @@ using System.Collections.Generic;
 using System.IO;
 using MeVersusMany.DataModel;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace MeVersusMany.UI
 {
     class ShellViewModel : Screen
     {
         //activate this for testing purposes. When activated no actual Erg-connection will be made, instead a Ghost will be used a a player
-        bool dryRun = false;
+        bool dryRun = true;
 
 
 
@@ -25,16 +26,27 @@ namespace MeVersusMany.UI
         RankingViewModel ranking = null;
         IEventAggregator eventAggregator = null;
 
+
+
+        //this is for disabling sleep and screesnaver for the applications runtime
+        //from https://stackoverflow.com/a/2284720
+        public const uint ES_CONTINUOUS = 0x80000000;
+        public const uint ES_SYSTEM_REQUIRED = 0x00000001;
+        public const uint ES_DISPLAY_REQUIRED = 0x00000002;
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern uint SetThreadExecutionState([In] uint esFlags);
+
         public ShellViewModel()
         {
             DisplayName = "MeVersusMany";
+
+            SetThreadExecutionState(ES_CONTINUOUS | ES_DISPLAY_REQUIRED | ES_SYSTEM_REQUIRED);
 
             //init the EventAggregator
             eventAggregator = new EventAggregator();
             eventAggregator.Subscribe(this);
 
             //get a connection to the C2 ergometer
-
             if(dryRun)
             {
                 c2erg = new SqliteErg("session_21-1-19_11-52-27.Kickstarter.db"); //NOTE: use a ghost as primary erg for testing purposes
@@ -86,6 +98,7 @@ namespace MeVersusMany.UI
 
         public void ExitApplication()
         {
+            SetThreadExecutionState(ES_CONTINUOUS);
             TryClose();
         }
         
