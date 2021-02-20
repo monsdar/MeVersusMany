@@ -49,7 +49,7 @@ namespace MeVersusMany.UI
             //get a connection to the C2 ergometer
             if(dryRun)
             {
-                c2erg = new SqliteErg("session_21-1-19_11-52-27.Kickstarter.db"); //NOTE: use a ghost as primary erg for testing purposes
+                c2erg = new SqliteErg("recordings/session_21-1-19_11-52-27.Kickstarter.db"); //NOTE: use a ghost as primary erg for testing purposes
                 c2erg.IsPlayer = true;
             }
             else
@@ -60,7 +60,7 @@ namespace MeVersusMany.UI
             storage = new SqliteWriter(dryRun);
 
             //get all recorded sessions
-            string[] databaseFiles = Directory.GetFiles(".", "*.db");
+            string[] databaseFiles = Directory.GetFiles(".", "recordings/*.db");
             foreach (var file in databaseFiles)
             {
                 var sqliteErg = new SqliteErg(file);

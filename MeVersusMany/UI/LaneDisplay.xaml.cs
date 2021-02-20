@@ -160,7 +160,7 @@ namespace MeVersusMany.UI
             var fill = BoatColor.Clone();
             fill.Opacity = 0.5;
             boat.Fill = fill;
-            boat.StrokeThickness = 3.0;
+            boat.StrokeThickness = 6.0;
 
             canvas.InvalidateVisual();
         }
