@@ -27,8 +27,11 @@ namespace MeVersusMany.UI
         IEventAggregator eventAggregator = null;
 
 
+        public string ConnectErg { get; private set; } = "Welcome to MeVersusMany!";
+        public bool ConnectErgIsVisible { get; set; } = true;
 
-        //this is for disabling sleep and screesnaver for the applications runtime
+
+        //this is for disabling sleep and screensaver for the applications runtime
         //from https://stackoverflow.com/a/2284720
         public const uint ES_CONTINUOUS = 0x80000000;
         public const uint ES_SYSTEM_REQUIRED = 0x00000001;
@@ -54,7 +57,7 @@ namespace MeVersusMany.UI
             }
             else
             {
-                c2erg = new C2Erg(0); //always work with the first connected erg (address == 0)
+                c2erg = new C2Erg();
                 c2erg.IsPlayer = true;
             }
             storage = new SqliteWriter(dryRun);
@@ -78,12 +81,61 @@ namespace MeVersusMany.UI
 
         private void PerformUpdate(object sender, EventArgs e)
         {
+            if(c2erg.IsErgConnected())
+            {
+                if (c2erg.IsWorkoutStarted())
+                {
+                    if (ConnectErgIsVisible)
+                    {
+                        ConnectErgIsVisible = false;
+                        NotifyOfPropertyChange(() => ConnectErgIsVisible);
+                    }
+
+                    //TODO: We should update the values in a thread somewhere else... do not hog the UI-Thread with this
+                    //NOTE: C2Erg ignores the timestamp, Ghost-Ergs need some kind of continuous timer. Calculating the timestamp anyways is for dryRun
+                    var timeElapsed = DateTime.UtcNow - Process.GetCurrentProcess().StartTime.ToUniversalTime();
+                    c2erg.Update(timeElapsed.TotalSeconds);
+                    foreach (IErg recordErg in recordedErgs)
+                    {
+                        recordErg.Update(c2erg.ExerciseTime);
+                    }
+
+                    playerStats.PerformUpdate(c2erg);
+                    overallStats.PerformUpdate(c2erg, recordedErgs);
+                    ranking.PerformUpdate(c2erg, recordedErgs);
+                    storage.PerformUpdate(c2erg);
+                }
+                else
+                {
+                    var currentMessage = "Please start rowing...";
+                    if (ConnectErg != currentMessage)
+                    {
+                        ConnectErg = currentMessage;
+                        ConnectErgIsVisible = true;
+                        NotifyOfPropertyChange(() => ConnectErg);
+                        NotifyOfPropertyChange(() => ConnectErgIsVisible);
+                    }
+                }
+            }
+            else
+            {
+                var currentMessage = "Please connect your ergometer...";
+                if(ConnectErg != currentMessage)
+                {
+                    ConnectErg = currentMessage;
+                    ConnectErgIsVisible = true;
+                    NotifyOfPropertyChange(() => ConnectErg);
+                    NotifyOfPropertyChange(() => ConnectErgIsVisible);
+                }
+            }
+
+
             if(c2erg.IsWorkoutStarted())
             {
                 //TODO: We should update the values in a thread somewhere else... do not hog the UI-Thread with this
                 //NOTE: C2Erg ignores the timestamp, Ghost-Ergs need some kind of continuous timer. Calculating the timestamp anyways is for dryRun
                 var timeElapsed = DateTime.UtcNow - Process.GetCurrentProcess().StartTime.ToUniversalTime();
-                c2erg.Update(timeElapsed.TotalSeconds + 120);
+                c2erg.Update(timeElapsed.TotalSeconds);
                 foreach (IErg recordErg in recordedErgs)
                 {
                     recordErg.Update(c2erg.ExerciseTime);

@@ -22,24 +22,8 @@ namespace MeVersusMany.C2Connector
         public Color ErgColor { get; set; }
         public DateTime WorkoutDate { get; set; }
 
-        public C2Erg(ushort givenErgAdress = 0)
+        public C2Erg()
         {
-            //init the C2 interface
-            //TODO: What if there are multiple Ergs are connected, is it a good idea to init the interface multiple times?
-            PMUSBInterface.Initialize();
-            PMUSBInterface.InitializeProtocol(999);
-
-            ushort numErgs = PMUSBInterface.DiscoverPMs(PMUSBInterface.PMtype.PM3TESTER_PRODUCT_NAME);
-            numErgs += PMUSBInterface.DiscoverPMs(PMUSBInterface.PMtype.PM3_PRODUCT_NAME);
-            numErgs += PMUSBInterface.DiscoverPMs(PMUSBInterface.PMtype.PM3_PRODUCT_NAME2);
-            numErgs += PMUSBInterface.DiscoverPMs(PMUSBInterface.PMtype.PM4_PRODUCT_NAME);
-            numErgs += PMUSBInterface.DiscoverPMs(PMUSBInterface.PMtype.PM5_PRODUCT_NAME);
-            if (numErgs == 0)
-            {
-                //TODO: This means that no erg has been found... what to do?
-            }
-            pm = new PerformanceMonitor(givenErgAdress);
-
             //Init our properties...
             Cadence = 0;
             Calories = 0;
@@ -53,12 +37,61 @@ namespace MeVersusMany.C2Connector
             WorkoutDate = DateTime.Now;
         }
 
+        public PerformanceMonitor InitErg(ushort ergAddress)
+        {
+            //init the C2 interface
+            //TODO: What if there are multiple Ergs connected, is it a good idea to init the interface multiple times?
+            PMUSBInterface.Initialize();
+            PMUSBInterface.InitializeProtocol(999);
+
+            ushort numErgs = PMUSBInterface.DiscoverPMs(PMUSBInterface.PMtype.PM3TESTER_PRODUCT_NAME);
+            numErgs += PMUSBInterface.DiscoverPMs(PMUSBInterface.PMtype.PM3_PRODUCT_NAME);
+            numErgs += PMUSBInterface.DiscoverPMs(PMUSBInterface.PMtype.PM3_PRODUCT_NAME2);
+            numErgs += PMUSBInterface.DiscoverPMs(PMUSBInterface.PMtype.PM4_PRODUCT_NAME);
+            numErgs += PMUSBInterface.DiscoverPMs(PMUSBInterface.PMtype.PM5_PRODUCT_NAME);
+            if (numErgs == 0)
+            {
+                //do not init the PM before there's an actual PM connected
+                throw new PMUSBInterface.PMUSBException("No erg found", -1);
+            }
+            return new PerformanceMonitor(ergAddress);
+        }
+
+        public bool IsErgConnected()
+        {
+            if(pm != null)
+            {
+                return true;
+            }
+
+            try
+            {
+                //this has to be done initially to get a connection to the PM
+                pm = InitErg(0); //always work with the first connected erg (address == 0)
+                return true;
+            }
+            catch (PMUSBInterface.PMUSBException ex)
+            {
+                //No erg connected yet, so workout is obviously not started...
+                return false;
+            }
+
+            
+        }
+
         public bool IsWorkoutStarted()
         {
             try
             {
+                //this has to be done initially to get a connection to the PM
+                //fails with PMUSBInterface.PMUSBException if there's no success in connecting the Erg
+                if (pm == null)
+                {
+                    pm = InitErg(0); //always work with the first connected erg (address == 0)
+                }
+
                 //Try to get the erg status inited first...
-                if(!pm.IsStatusInited)
+                if (!pm.IsStatusInited)
                 {
                     pm.StatusUpdate();
                 }
@@ -68,8 +101,7 @@ namespace MeVersusMany.C2Connector
             }
             catch(PMUSBInterface.PMUSBException ex)
             {
-                //No erg connected yet, so workout if obviously not started...
-                //TODO: Give some feedback to the user to connect the erg correctly?
+                //No erg connected yet, so workout is obviously not started...
                 return false;
             }
 
@@ -86,15 +118,7 @@ namespace MeVersusMany.C2Connector
         {
             //NOTE: Timestamp will be ignored...
 
-            try
-            {
-                pm.LowResolutionUpdate();
-            }
-            catch (PMUSBInterface.PMUSBException)
-            {
-                //No Erg found, USB exception...
-                //TODO: Notify the user that the connection has been closed... So he knows when his workout is not recorded anymore
-            }
+            pm.LowResolutionUpdate(); //throws PMUSBInterface.PMUSBException
             
             Cadence = pm.SPM;
             Calories = pm.Calories;

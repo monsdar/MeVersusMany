@@ -10,10 +10,15 @@
                 <MenuItem x:Name="ExitApplication" Header="Exit"/>
             </MenuItem>
         </Menu>
-        <DockPanel>
-            <ContentControl x:Name="PlayerStats" DockPanel.Dock="Top"/>
-            <ContentControl x:Name="OverallStats" DockPanel.Dock="Bottom"/>
-            <ContentControl x:Name="Ranking"/>
-        </DockPanel>
+        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid Name="ConnectErgIsVisible" Grid.ZIndex="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#aadddddd">
+                <Label Background="LightBlue" FontSize="48" VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="ConnectErg" />
+            </Grid>
+            <DockPanel>
+                <ContentControl x:Name="PlayerStats" DockPanel.Dock="Top"/>
+                <ContentControl x:Name="OverallStats" DockPanel.Dock="Bottom"/>
+                <ContentControl x:Name="Ranking"/>
+            </DockPanel>
+        </Grid>
     </DockPanel>
 </UserControl>

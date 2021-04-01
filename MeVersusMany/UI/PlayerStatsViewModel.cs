@@ -6,26 +6,16 @@ namespace MeVersusMany.UI
     class PlayerStatsViewModel : Screen
     {   
         public PlayerStatsViewModel()
-        {
-            Cadence = "0 SPM";
-            Calories = "0 cal";
-            Distance = "0 m";
-            ExerciseTime = "00:00:00";
-            Pace = "00:00.0";
-            Power = "0 Watt";
-            AvgPace = "00:00.000";
-            Forecast = "0 m";
-        }
+        {}
 
-        public string Cadence { get; private set; }
-        public string Calories { get; private set; }
-        public string Distance { get; private set; }
-        public string ExerciseTime { get; private set; }
-        public string Pace { get; private set; }
-        public string Power { get; private set; }
-
-        public string AvgPace { get; private set; }
-        public string Forecast { get; private set; }
+        public string Cadence { get; private set; } = "0 SPM";
+        public string Calories { get; private set; } = "0 cal";
+        public string Distance { get; private set; } = "0 m";
+        public string ExerciseTime { get; private set; } = "00:00:00";
+        public string Pace { get; private set; } = "00:00.0";
+        public string Power { get; private set; } = "0 Watt";
+        public string AvgPace { get; private set; } = "00:00.000";
+        public string Forecast { get; private set; } = "0 m";
 
         public void PerformUpdate(DataModel.IErg givenErg)
         {

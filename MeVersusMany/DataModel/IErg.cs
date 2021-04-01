@@ -20,6 +20,7 @@ namespace MeVersusMany.DataModel
         DateTime WorkoutDate { get; set; }
 
         bool IsWorkoutStarted();
+        bool IsErgConnected();
         void Update(double timestamp);
     }
 }

@@ -11,7 +11,7 @@ namespace MeVersusMany
 
         public SqliteWriter(bool dryRun = false)
         {
-            filename = "recordings/session_" + System.DateTime.Now.ToString("%y-%M-%d_%H-%m-%s") + ".db";
+            filename = "recordings/session_" + System.DateTime.Now.ToString("%yy-%MM-%dd_%HH-%mm-%ss") + ".db";
             this.dryRun = dryRun;
         }
 

@@ -76,7 +76,7 @@ namespace MeVersusMany.Storage
             var match = Regex.Match(filepath, pattern);
             if(match.Groups.Count >= 2)
             { 
-                WorkoutDate = DateTime.ParseExact(match.Groups[1].Value, "y-M-d_H-m-s", null);
+                WorkoutDate = DateTime.ParseExact(match.Groups[1].Value, "yy-MM-dd_HH-mm-ss", null);
             }
         }
 
@@ -175,6 +175,13 @@ namespace MeVersusMany.Storage
                 }
             }
         }
+
+        public bool IsErgConnected()
+        {
+            //A SqliteErg is always connected...
+            return true;
+        }
+
         public bool IsPlayer { get; set; } = false;
         public string Name { get; set; }
         public double Distance { get; set; }
