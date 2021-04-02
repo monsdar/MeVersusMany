@@ -1,5 +1,6 @@
 ﻿
 using SQLite;
+using System.Globalization;
 
 namespace MeVersusMany
 {
@@ -11,7 +12,7 @@ namespace MeVersusMany
 
         public SqliteWriter(bool dryRun = false)
         {
-            filename = "recordings/session_" + System.DateTime.Now.ToString("%yy-%MM-%dd_%HH-%mm-%ss") + ".db";
+            filename = "recordings/session_" + System.DateTime.Now.ToString("yy-MM-dd_HH-mm-ss") + ".db";
             this.dryRun = dryRun;
         }
 
